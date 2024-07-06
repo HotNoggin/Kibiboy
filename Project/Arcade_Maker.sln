@@ -1,22 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.9.34728.123
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arcade_Maker", "Arcade_Maker\Arcade_Maker.vcxproj", "{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arcade_Maker", "Arcade-Maker\Arcade_Maker.vcxproj", "{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Debug|Any CPU.Build.0 = Debug|x64
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Debug|x64.ActiveCfg = Debug|x64
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Debug|x64.Build.0 = Debug|x64
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Debug|x86.ActiveCfg = Debug|Win32
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Debug|x86.Build.0 = Debug|Win32
+		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Release|Any CPU.ActiveCfg = Release|x64
+		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Release|Any CPU.Build.0 = Release|x64
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Release|x64.ActiveCfg = Release|x64
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Release|x64.Build.0 = Release|x64
 		{8CA9B3E1-567B-47C1-B5A7-FE7E00F8D2B1}.Release|x86.ActiveCfg = Release|Win32
@@ -24,8 +30,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {66AB56B6-E18F-482B-84CA-1DD64408F23A}
 	EndGlobalSection
 EndGlobal
