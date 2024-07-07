@@ -5,10 +5,41 @@
 
 
 // Screen dimension constants
-const int WINDOW_SURFACE_WIDTH = 320;
-const int WINDOW_SURFACE_HEIGHT = 256;
-const int DEFAULT_WINDOW_WIDTH = WINDOW_SURFACE_WIDTH * 2;
-const int DEFAULT_WINDOW_HEIGHT = WINDOW_SURFACE_HEIGHT * 2;
+const int CANVAS_WIDTH = 320;
+const int CANVAS_HEIGHT = 256;
+// Double the canvas size + 64px of padding
+const int DEFAULT_WINDOW_WIDTH = CANVAS_WIDTH * 2 + 64;
+const int DEFAULT_WINDOW_HEIGHT = CANVAS_HEIGHT * 2 + 64;
+
+
+// A color represented as an rgb value (no alpha)
+struct Color {
+	int r, g, b;
+
+	Color(int red, int green, int blue) {
+		r = red;
+		g = green;
+		b = blue;
+	}
+};
+
+// Color constants
+const Color COLOR_BLACK = Color(0x00, 0x00, 0x00);
+const Color COLOR_DARK_BLUE = Color(0x1D, 0x2B, 0x53);
+const Color COLOR_DARK_PURPLE = Color(0x7E, 0x25, 0x53);
+const Color COLOR_DARK_GREEN = Color(0x00, 0x87, 0x51);
+const Color COLOR_BROWN = Color(0xAB, 0x52, 0x36);
+const Color COLOR_DARK_GRAY = Color(0x5F, 0x57, 0x4F);
+const Color COLOR_LIGHT_GRAY = Color(0xC2, 0xC3, 0xC7);
+const Color COLOR_WHITE = Color(0xFF, 0xF1, 0xE8);
+const Color COLOR_RED = Color(0xFF, 0x00, 0x4D);
+const Color COLOR_ORANGE = Color(0xFF, 0xA3, 0x00);
+const Color COLOR_YELLOW = Color(0xFF, 0xEC, 0x27);
+const Color COLOR_GREEN = Color(0x00, 0xE4, 0x36);
+const Color COLOR_BLUE = Color(0x29, 0xAD, 0xFF);
+const Color COLOR_LAVENDER = Color(0x83, 0x76, 0x9C);
+const Color COLOR_PINK = Color(0xFF, 0x77, 0xA8);
+const Color COLOR_PEACH = Color(0xFF, 0xCC, 0xAA);
 
 
 // Boots SDL and creates a new window
@@ -34,9 +65,9 @@ int main(int argc, char* args[]) {
 		bool quit = false;
 
 		SDL_Event event;
-		SDL_Rect scaleRect;
-		scaleRect.x = 0;
-		scaleRect.y = 0;
+		SDL_Rect canvasRect;
+		canvasRect.x = 0;
+		canvasRect.y = 0;
 
 		int windowWidth = 0;
 		int windowHeight = 0;
@@ -68,26 +99,32 @@ int main(int argc, char* args[]) {
 			//2. Drawing:
 				
 			// Calculate the proper width and height according to the integer scale
-			horizontalScale = static_cast<int>(std::max(windowWidth / WINDOW_SURFACE_WIDTH, 1));
-			verticalScale = static_cast<int>(std::max(windowHeight / WINDOW_SURFACE_HEIGHT, 1));
+			horizontalScale = static_cast<int>(std::max(windowWidth / CANVAS_WIDTH, 1));
+			verticalScale = static_cast<int>(std::max(windowHeight / CANVAS_HEIGHT, 1));
 			if (horizontalScale > verticalScale) {
 				horizontalScale = verticalScale;
 			}
 			else if (verticalScale > horizontalScale) {
 				verticalScale = horizontalScale;
 			}
-			scaleRect.w = WINDOW_SURFACE_WIDTH * horizontalScale;
-			scaleRect.h = WINDOW_SURFACE_HEIGHT * verticalScale;
+			canvasRect.w = CANVAS_WIDTH * horizontalScale;
+			canvasRect.h = CANVAS_HEIGHT * verticalScale;
 
 			// Center the image
 			// The x is the window's horizontal center - half of the image width
 			// The y is the same, but vertical instead of horizontal
-			scaleRect.x = (windowWidth - scaleRect.w) * 0.5;
-			scaleRect.y = (windowHeight - scaleRect.h) * 0.5;
+			canvasRect.x = (windowWidth - canvasRect.w) * 0.5;
+			canvasRect.y = (windowHeight - canvasRect.h) * 0.5;
 
 			// Clear, draw, and update
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			// Black background
+			SDL_SetRenderDrawColor(renderer,
+				COLOR_DARK_GRAY.r, COLOR_DARK_GRAY.g, COLOR_DARK_GRAY.b, SDL_ALPHA_OPAQUE);
 			SDL_RenderClear(renderer);
+			// Dark purple window
+			SDL_SetRenderDrawColor(renderer,
+				COLOR_BLACK.r, COLOR_BLACK.g, COLOR_BLACK.b, SDL_ALPHA_OPAQUE);
+			SDL_RenderFillRect(renderer, &canvasRect);
 			SDL_RenderPresent(renderer);
 		}
 	}
@@ -122,13 +159,11 @@ bool init() {
 		else
 		{
 			// Create renderer and finish setup
-			renderer = SDL_CreateRenderer(window, -1, 0);
+			SDL_SetWindowMinimumSize(window, CANVAS_WIDTH, CANVAS_HEIGHT);
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 			if (renderer == NULL) {
 				printf("SDL Renderer could not be created. SDL_Error: %s\n", SDL_GetError());
 			}
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			SDL_RenderClear(renderer);
-			SDL_RenderPresent(renderer);
 		}
 	}
 
