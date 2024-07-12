@@ -1,51 +1,10 @@
 // Includes
 #include <algorithm>
 #include <stdint.h>
-#include <span>
 #include <iostream>
 #include "Canvas.h"
 
-	
-Color::Color(uint8_t red, uint8_t green, uint8_t blue) {
-	r = red;
-	g = green;
-	b = blue;
-}
-
-
-// Color constants
-// A pure black color
-Color BLACK = Color(0x00, 0x00, 0x00);
-// A deep blue color
-Color DARK_BLUE = Color(0x1D, 0x2B, 0x53);
-// A deep purple color
-Color DARK_PURPLE = Color(0x7E, 0x25, 0x53);
-// A deep green color
-Color DARK_GREEN = Color(0x00, 0x87, 0x51);
-// A saturated brown color
-Color BROWN = Color(0xAB, 0x52, 0x36);
-// A deep gray color
-Color DARK_GRAY = Color(0x5F, 0x57, 0x4F);
-// A bright gray color
-Color LIGHT_GRAY = Color(0xC2, 0xC3, 0xC7);
-// An off-white color
-Color WHITE = Color(0xFF, 0xF1, 0xE8);
-// A bright red color
-Color RED = Color(0xFF, 0x00, 0x4D);
-// A bright orange color
-Color ORANGE = Color(0xFF, 0xA3, 0x00);
-// A bright yellow color
-Color YELLOW = Color(0xFF, 0xEC, 0x27);
-// A neon green color
-Color GREEN = Color(0x00, 0xE4, 0x36);
-// A bright blue color
-Color BLUE = Color(0x29, 0xAD, 0xFF);
-// A bright indigo color
-Color LAVENDER = Color(0x83, 0x76, 0x9C);
-// A bright pink color
-Color PINK = Color(0xFF, 0x77, 0xA8);
-// A tan/peach color
-Color PEACH = Color(0xFF, 0xCC, 0xAA);
+using namespace Colors;
 
 
 bool Canvas::initialize(Uint32 format) {
@@ -77,9 +36,23 @@ void Canvas::clear() {
 }
 
 
+// Draw a single pixel to the canvas
 void Canvas::pixel(Color* color, int x, int y) {
+	// Don't draw if out of bounds
+	if (x < 0 || x >= canvasSurface->w || y < 0 || y >= canvasSurface->h) {
+		return;
+	}
+
 	SDL_LockSurface(canvasSurface);
-	void* pixels = canvasSurface->pixels;
+	// Calculate the location of the pixel
+	Uint32* const target_pixel = (Uint32*)((Uint32*)canvasSurface->pixels
+		+ y * canvasSurface->pitch
+		+ x * canvasSurface->format->BytesPerPixel);
+
+	// Set the target pixel's value to the color as an int 
+	Uint32 pixel = color->asInt(canvasSurface->format);
+	*target_pixel = pixel;
+
 	SDL_UnlockSurface(canvasSurface);
 }
 
@@ -142,9 +115,4 @@ void Canvas::updateScreen(SDL_Window* window) {
 		WHITE.r, WHITE.g, WHITE.b));
 	SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
 	SDL_UpdateWindowSurface(window);
-}
-
-
-Uint32 Color::asInt(SDL_PixelFormat* format) {
-	return SDL_MapRGB(format, r, g, b);
 }

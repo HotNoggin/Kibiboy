@@ -26,10 +26,12 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Colors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Canvas.h" />
+    <ClInclude Include="Colors.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
