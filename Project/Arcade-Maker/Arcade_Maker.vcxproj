@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -30,6 +31,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Canvas.h" />
+    <ClInclude Include="Colors.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

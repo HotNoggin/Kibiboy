@@ -4,6 +4,9 @@
 #include <string>
 #include "Canvas.h"
 #include "Application.h"
+#include "Colors.h"
+
+using namespace Colors;
 
 
 int main(int argc, char* args[]) {
@@ -15,7 +18,7 @@ int main(int argc, char* args[]) {
 		Canvas::WIDTH, Canvas::HEIGHT);
 	// Create and initialize the canvas
 	Canvas* canvas = new Canvas();
-	bool canvasSuccess = canvas->initialize();
+	bool canvasSuccess = canvas->initialize(SDL_GetWindowPixelFormat(app->window));
 
 	// Handle failures
 	if (!appSuccess) {
@@ -47,6 +50,7 @@ int main(int argc, char* args[]) {
 			}
 
 			// Draw the canvas to the application window
+			canvas->pixel(&RED, 0, 0);
 			canvas->updateScreen(app->window);
 		}
 	}
