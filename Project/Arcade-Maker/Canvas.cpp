@@ -29,23 +29,23 @@ void Canvas::clear() {
 }
 
 // Draw a single pixel to the canvas
-void Canvas::pixel(Color color, int x, int y) {
-  // Don't draw if out of bounds
-  if (x < 0 || x >= canvasSurface->w || y < 0 || y >= canvasSurface->h) {
-    return;
-  }
+void Canvas::pixel(Color* color, int x, int y) {
+	// Don't draw if out of bounds
+	if (x < 0 || x >= canvasSurface->w || y < 0 || y >= canvasSurface->h) {
+		return;
+	}
 
-  SDL_LockSurface(canvasSurface);
-  // Calculate the location of the pixel
-  Uint32 *const target_pixel =
-      (Uint32 *)((Uint32 *)canvasSurface->pixels + y * canvasSurface->pitch +
-                 x * canvasSurface->format->BytesPerPixel);
+	SDL_LockSurface(canvasSurface);
+	// Calculate the location of the pixel
+	Uint32* const target_pixel = (Uint32*)((Uint8*)canvasSurface->pixels
+		+ y * canvasSurface->pitch
+		+ x * canvasSurface->format->BytesPerPixel);
 
-  // Set the target pixel's value to the color as an int
-  Uint32 pixel = color.asInt(canvasSurface->format);
-  *target_pixel = pixel;
+	// Set the target pixel's value to the color as an int 
+	Uint32 pixel = color->asInt(canvasSurface->format);
+	*target_pixel = pixel;
 
-  SDL_UnlockSurface(canvasSurface);
+	SDL_UnlockSurface(canvasSurface);
 }
 
 void Canvas::updateScreen(SDL_Window *window) {
