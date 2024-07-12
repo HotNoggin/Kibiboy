@@ -21,12 +21,12 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="Colors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
