@@ -1,6 +1,7 @@
 // Includes
 #include <algorithm>
 #include <stdint.h>
+#include <span>
 #include <iostream>
 #include "Canvas.h"
 
@@ -14,44 +15,45 @@ Color::Color(uint8_t red, uint8_t green, uint8_t blue) {
 
 // Color constants
 // A pure black color
-const Color BLACK = Color(0x00, 0x00, 0x00);
+Color BLACK = Color(0x00, 0x00, 0x00);
 // A deep blue color
-const Color DARK_BLUE = Color(0x1D, 0x2B, 0x53);
+Color DARK_BLUE = Color(0x1D, 0x2B, 0x53);
 // A deep purple color
-const Color DARK_PURPLE = Color(0x7E, 0x25, 0x53);
+Color DARK_PURPLE = Color(0x7E, 0x25, 0x53);
 // A deep green color
-const Color DARK_GREEN = Color(0x00, 0x87, 0x51);
+Color DARK_GREEN = Color(0x00, 0x87, 0x51);
 // A saturated brown color
-const Color BROWN = Color(0xAB, 0x52, 0x36);
+Color BROWN = Color(0xAB, 0x52, 0x36);
 // A deep gray color
-const Color DARK_GRAY = Color(0x5F, 0x57, 0x4F);
+Color DARK_GRAY = Color(0x5F, 0x57, 0x4F);
 // A bright gray color
-const Color LIGHT_GRAY = Color(0xC2, 0xC3, 0xC7);
+Color LIGHT_GRAY = Color(0xC2, 0xC3, 0xC7);
 // An off-white color
-const Color WHITE = Color(0xFF, 0xF1, 0xE8);
+Color WHITE = Color(0xFF, 0xF1, 0xE8);
 // A bright red color
-const Color RED = Color(0xFF, 0x00, 0x4D);
+Color RED = Color(0xFF, 0x00, 0x4D);
 // A bright orange color
-const Color ORANGE = Color(0xFF, 0xA3, 0x00);
+Color ORANGE = Color(0xFF, 0xA3, 0x00);
 // A bright yellow color
-const Color YELLOW = Color(0xFF, 0xEC, 0x27);
+Color YELLOW = Color(0xFF, 0xEC, 0x27);
 // A neon green color
-const Color GREEN = Color(0x00, 0xE4, 0x36);
+Color GREEN = Color(0x00, 0xE4, 0x36);
 // A bright blue color
-const Color BLUE = Color(0x29, 0xAD, 0xFF);
+Color BLUE = Color(0x29, 0xAD, 0xFF);
 // A bright indigo color
-const Color LAVENDER = Color(0x83, 0x76, 0x9C);
+Color LAVENDER = Color(0x83, 0x76, 0x9C);
 // A bright pink color
-const Color PINK = Color(0xFF, 0x77, 0xA8);
+Color PINK = Color(0xFF, 0x77, 0xA8);
 // A tan/peach color
-const Color PEACH = Color(0xFF, 0xCC, 0xAA);
+Color PEACH = Color(0xFF, 0xCC, 0xAA);
 
 
-bool Canvas::initialize() {
+bool Canvas::initialize(Uint32 format) {
 	bool success = true;
-	canvasSurface = SDL_CreateRGBSurface(0,
+	canvasSurface = SDL_CreateRGBSurfaceWithFormat(0,
 		Canvas::WIDTH, Canvas::HEIGHT,
-		32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+		32, format);
+
 	if (canvasSurface == NULL) {
 		success = false;
 		std::cout << "Canvas failed to create surface. SDL_Error:\n";
@@ -71,8 +73,14 @@ void Canvas::destroy() {
 
 
 void Canvas::clear() {
-	SDL_FillRect(canvasSurface, NULL, SDL_MapRGB(canvasSurface->format,
-		BLACK.r, BLACK.g, BLACK.b));
+	SDL_FillRect(canvasSurface, NULL, BLACK.asInt(canvasSurface->format));
+}
+
+
+void Canvas::pixel(Color* color, int x, int y) {
+	SDL_LockSurface(canvasSurface);
+	void* pixels = canvasSurface->pixels;
+	SDL_UnlockSurface(canvasSurface);
 }
 
 
@@ -134,4 +142,9 @@ void Canvas::updateScreen(SDL_Window* window) {
 		WHITE.r, WHITE.g, WHITE.b));
 	SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
 	SDL_UpdateWindowSurface(window);
+}
+
+
+Uint32 Color::asInt(SDL_PixelFormat* format) {
+	return SDL_MapRGB(format, r, g, b);
 }

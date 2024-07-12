@@ -15,7 +15,7 @@ int main(int argc, char* args[]) {
 		Canvas::WIDTH, Canvas::HEIGHT);
 	// Create and initialize the canvas
 	Canvas* canvas = new Canvas();
-	bool canvasSuccess = canvas->initialize();
+	bool canvasSuccess = canvas->initialize(SDL_GetWindowPixelFormat(app->window));
 
 	// Handle failures
 	if (!appSuccess) {
