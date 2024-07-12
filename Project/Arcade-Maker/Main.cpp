@@ -1,60 +1,62 @@
 // Includes
-#include <stdio.h>
+#include <iostream>
 #include <SDL.h>
 #include <string>
 #include "Canvas.h"
 #include "Application.h"
 
 
-
-// The renderer to handle drawing in the game window
-SDL_Renderer* renderer = NULL;
-// The window to render to
-SDL_Window* window = NULL;
-
-
 int main(int argc, char* args[]) {
 
-	// Initialize SDL
-	if (!Application::initialize(window, "Arcade Maker", 
-		Canvas::CANVAS_WIDTH, Canvas:: CANVAS_HEIGHT,
-		Canvas::CANVAS_WIDTH, Canvas::CANVAS_HEIGHT)) {
-		printf("Application failed to initialize. \n");
+	// Initialize SDL and launch the application
+	Application* app = new Application();
+	bool appSuccess = app->initialize("Arcade Maker",
+		Canvas::WIDTH, Canvas::HEIGHT,
+		Canvas::WIDTH, Canvas::HEIGHT);
+	// Create and initialize the canvas
+	Canvas* canvas = new Canvas();
+	bool canvasSuccess = canvas->initialize();
+
+	// Handle failures
+	if (!appSuccess) {
+		std::cout << "Application failed to initialize.\n";
 	}
+	else if (!canvasSuccess) {
+		std::cout << "Canvas failed to initialize.\n";
+	}
+
+	// Total success!
 	else
 	{
 		// When this is set to true, the rendering loop stops and the application quits
 		bool quit = false;
-
+		// The most recent event, to be set by SDL_PollEvent and checked in the main loop
 		SDL_Event event;
-		SDL_Surface* canvasSurface = NULL;
-		canvasSurface = Canvas::createCanvasSurface();
 
-		if (canvasSurface == NULL) {
-			printf("Canvas surface failed to initialize. SDL Error: %s\n", SDL_GetError());
-		}
-		else {
-		
-			// Main Loop
-			while (!quit) {
+		// Main Loop
+		while (!quit) {
 
-				// 1. Event Handling:
-				// Check all polled (queued) events. If there is an event, it is put in "event".
-				// SDL_PollEvent returns 0 if there are no events, which will stop the loop
-				while (SDL_PollEvent(&event) != 0) {
-					// If the event is a quit event, quit!
-					if (event.type == SDL_QUIT) {
-						quit = true;
-					}
+			// Event Handling
+			// Check all polled (queued) events. If there is an event, it is put in "event".
+			// SDL_PollEvent returns 0 if there are no events, which will stop the loop
+			while (SDL_PollEvent(&event) != 0) {
+				// If the event is a quit event, quit!
+				if (event.type == SDL_QUIT) {
+					quit = true;
 				}
-
-				Canvas::updateScreen(window, canvasSurface);
 			}
+
+			// Draw the canvas to the application window
+			canvas->updateScreen(app->window);
 		}
 	}
 
 	// Free resources and close SDL
-	Application::close(window);
+	canvas->destroy();
+	app->close();
+	delete canvas;
+	delete app;
+	SDL_Quit();
 	return 0;
 }
 
