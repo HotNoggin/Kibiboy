@@ -47,6 +47,7 @@ int main(int argc, char* args[]) {
 				}
 			}
 
+
 			// Test draw
 			for (int x = 0; x < Canvas::WIDTH; x++) {
 				for (int y = 0; y < Canvas::HEIGHT; y++) {
@@ -58,7 +59,6 @@ int main(int argc, char* args[]) {
 
 			// Draw the canvas to the application window
 			canvas->updateScreen(app->window);
-			
 		}
 	}
 

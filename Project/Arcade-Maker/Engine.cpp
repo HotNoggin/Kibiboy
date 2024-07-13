@@ -2,7 +2,6 @@
 #include <SDL.h>
 
 
-namespace Engine {
+class Engine {
 
-
-}
+};

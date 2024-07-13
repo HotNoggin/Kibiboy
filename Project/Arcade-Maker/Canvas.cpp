@@ -54,9 +54,9 @@ void Canvas::pixel(Color color, int x, int y) {
 void Canvas::updateScreen(SDL_Window *window) {
 	if (window == NULL) {
 		std::cout << "The window passed to the canvas is invalid. SDL_Error:\n";
-		std::cout << SDL_GetError();
-		return;
-	}
+    std::cout << SDL_GetError();
+	  return;
+  }
 
 	// The rect representing the size and position of the scaled canvas
 	SDL_Rect canvasRect = {};
@@ -84,9 +84,12 @@ void Canvas::updateScreen(SDL_Window *window) {
 	} else if (verticalScale > horizontalScale) {
 		verticalScale = horizontalScale;
 	}
+
+  
 	// Calculate the resulting width and height of the integer scale
 	canvasRect.w = WIDTH * horizontalScale;
 	canvasRect.h = HEIGHT * verticalScale;
+
 
   // Center the image
   // The x is the window's horizontal center - half of the image width
@@ -104,8 +107,8 @@ void Canvas::updateScreen(SDL_Window *window) {
     return;
   }
 
-  SDL_FillRect(windowSurface, NULL,
-               SDL_MapRGB(windowSurface->format, WHITE.r, WHITE.g, WHITE.b));
-  SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
-  SDL_UpdateWindowSurface(window);
+	SDL_FillRect(windowSurface, NULL,
+		SDL_MapRGB(windowSurface->format, WHITE.r, WHITE.g, WHITE.b));
+	SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
+	SDL_UpdateWindowSurface(window);
 }
