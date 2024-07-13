@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Colors.h"
+#include "Sprite.h"
 #include <SDL.h>
 
 
@@ -11,12 +12,14 @@ public:
 	static const int HEIGHT = 256;
 
 	// The surface that this canvas displays and draws to
-	SDL_Surface *canvasSurface;
+	SDL_Surface* canvasSurface;
 	// The color used to fill the canvas in clear()
 
 	bool initialize(Uint32 format);
 	void clear();
 	void pixel(Color color, int x, int y);
+	void rect(Color color, int x, int y, int w, int h);
+	void stamp(Sprite sprite, Color color, int x, int y);
 	void updateScreen(SDL_Window *window);
 	void destroy();
 };
