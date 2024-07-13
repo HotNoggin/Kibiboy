@@ -6,8 +6,6 @@
 #include "Application.h"
 #include "Colors.h"
 
-using namespace Colors;
-
 
 int main(int argc, char* args[]) {
 
@@ -53,7 +51,7 @@ int main(int argc, char* args[]) {
 			for (int x = 0; x < Canvas::WIDTH; x++) {
 				for (int y = 0; y < Canvas::HEIGHT; y++) {
 					if ((x + y) % 5 == 0) {
-						canvas->pixel(&RED, x, y);
+						canvas->pixel(RED, x, y);
 					}
 				}
 			}
