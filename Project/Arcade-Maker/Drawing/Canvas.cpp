@@ -31,6 +31,29 @@ void Canvas::clear() {
 }
 
 
+// Copy a sprite to the canvas at the specified position
+// (place a colored pixel on the canvas for each true pixel on the sprite)
+void Canvas::stamp(Sprite sprite, Color color, int x, int y) {
+	for (int pixel_x = 0; pixel_x < 16; pixel_x++) {
+		for (int pixel_y = 0; pixel_y < 16; pixel_y++) {
+			if (sprite.getPixel(pixel_x, pixel_y)) {
+				pixel(color, x + pixel_x, y + pixel_y);
+			}
+		}
+	}
+}
+
+
+// Fill a rectangular area of pixels with the specified color
+void Canvas::rect(Color color, int x, int y, int w, int h) {
+	for (int pixel_x = 0; pixel_x < w; pixel_x++) {
+		for (int pixel_y = 0; pixel_y < h; pixel_y++) {
+			pixel(color, x + pixel_x, y + pixel_y);
+		}
+	}
+}
+
+
 // Draw a single pixel to the canvas
 void Canvas::pixel(Color color, int x, int y) {
 	// Don't draw if out of bounds

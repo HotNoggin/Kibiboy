@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Colors.h"
+#include "Sprite.h"
 #include <SDL.h>
 
 
@@ -17,6 +18,8 @@ public:
 	bool initialize(Uint32 format);
 	void clear();
 	void pixel(Color color, int x, int y);
+	void rect(Color color, int x, int y, int w, int h);
+	void stamp(Sprite sprite, Color color, int x, int y);
 	void updateScreen(SDL_Window *window);
 	void destroy();
 };

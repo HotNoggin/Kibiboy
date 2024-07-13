@@ -20,8 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Canvas.cpp" />
-    <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="Drawing\Canvas.cpp" />
+    <ClCompile Include="Drawing\Colors.cpp" />
+    <ClCompile Include="Drawing\Sprite.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -30,8 +31,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Canvas.h" />
-    <ClInclude Include="Colors.h" />
+    <ClInclude Include="Drawing\Canvas.h" />
+    <ClInclude Include="Drawing\Colors.h" />
+    <ClInclude Include="Drawing\Sprite.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

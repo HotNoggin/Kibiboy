@@ -47,12 +47,38 @@ int main(int argc, char* args[]) {
 				}
 			}
 
-
-			// Test draw
+			// TESTS //
 			for (int x = 0; x < Canvas::WIDTH; x++) {
 				for (int y = 0; y < Canvas::HEIGHT; y++) {
+					// Test pixels
 					if ((x + y) % 8 == 0) {
-						canvas->pixel(RED, x, y);
+						canvas->pixel(GREEN, x, y);
+					}
+					if (x % 5 == 0) {
+						canvas->pixel(BLACK, x, y);
+					}
+					if (y % 5 == 0) {
+						canvas->pixel(BLACK, x, y);
+					}
+				}
+			}
+
+			for (int x = 0; x < Canvas::WIDTH; x++) {
+				for (int y = 0; y < Canvas::HEIGHT; y++) {
+					if (x % 32 == 0 && y % 32 == 0) {
+						// Test rect
+						canvas->rect(BLACK, x, y, 16, 16);
+
+						// Test sprite (Mouse, ©2024 Pineberry Fox, CC0)
+						Sprite sprite = {};
+						sprite.pixelRows = {
+							0x0000, 0x0000, 0x070c, 0x0f92,
+							0x1ff2, 0x1ff2, 0x1fd6, 0x0fd6,
+							0x05f2, 0x05e4, 0x0e08, 0x1e08,
+							0x706e, 0x7ffe, 0x0000, 0x0000
+						};
+
+						canvas->stamp(sprite, BROWN, x, y);
 					}
 				}
 			}
