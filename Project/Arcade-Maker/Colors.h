@@ -3,17 +3,19 @@
 #include <SDL.h>
 #include <algorithm>
 
+
 // A color represented as an rgb value (no alpha)
 struct Color {
-  int r, g, b;
+	int r, g, b;
 
-  Color();
-  Color(uint8_t red, uint8_t green, uint8_t blue);
+	Color();
+	Color(uint8_t red, uint8_t green, uint8_t blue);
 
-  // Returns the color as a single integer using the specified format
-  // Shorthand for SDL_MapRGB(format, r, g, b);
-  Uint32 asInt(SDL_PixelFormat *format);
+	// Returns the color as a single integer using the specified format
+	// Shorthand for SDL_MapRGB(format, r, g, b);
+	Uint32 asInt(SDL_PixelFormat *format);
 };
+
 
 #define BLACK Color(0, 0, 0)
 #define DARK_BLUE Color(0, 0, 139)
@@ -31,8 +33,3 @@ struct Color {
 #define LAVENDER Color(138, 43, 226)
 #define PINK Color(255, 192, 203)
 #define PEACH Color(255, 218, 185)
-
-namespace Colors {
-// Color constants
-// A pure black color
-};
