@@ -31,7 +31,7 @@ void Canvas::clear() {
 
 
 // Draw a single pixel to the canvas
-void Canvas::pixel(Color* color, int x, int y) {
+void Canvas::pixel(Color color, int x, int y) {
 	// Don't draw if out of bounds
 	if (x < 0 || x >= canvasSurface->w || y < 0 || y >= canvasSurface->h) {
 		return;
@@ -44,7 +44,7 @@ void Canvas::pixel(Color* color, int x, int y) {
 		+ x * canvasSurface->format->BytesPerPixel);
 
 	// Set the target pixel's value to the color as an int 
-	Uint32 pixel = color->asInt(canvasSurface->format);
+	Uint32 pixel = color.asInt(canvasSurface->format);
 	*target_pixel = pixel;
 
 	SDL_UnlockSurface(canvasSurface);
@@ -54,8 +54,8 @@ void Canvas::pixel(Color* color, int x, int y) {
 void Canvas::updateScreen(SDL_Window *window) {
 	if (window == NULL) {
 		std::cout << "The window passed to the canvas is invalid. SDL_Error:\n";
-		std::cout << SDL_GetError();
-		return;
+    std::cout << SDL_GetError();
+	  return;
   }
 
 	// The rect representing the size and position of the scaled canvas
@@ -85,25 +85,27 @@ void Canvas::updateScreen(SDL_Window *window) {
 		verticalScale = horizontalScale;
 	}
 
+  
 	// Calculate the resulting width and height of the integer scale
 	canvasRect.w = WIDTH * horizontalScale;
 	canvasRect.h = HEIGHT * verticalScale;
 
-	// Center the image
-	// The x is the window's horizontal center - half of the image width
-	// The y is the same, but vertical instead of horizontal
-	canvasRect.x = (windowWidth - canvasRect.w) / 2;
-	canvasRect.y = (windowHeight - canvasRect.h) / 2;
 
-	// Clear, draw, and update
-	SDL_Surface *windowSurface = NULL;
-	windowSurface = SDL_GetWindowSurface(window);
+  // Center the image
+  // The x is the window's horizontal center - half of the image width
+  // The y is the same, but vertical instead of horizontal
+  canvasRect.x = (windowWidth - canvasRect.w) / 2;
+  canvasRect.y = (windowHeight - canvasRect.h) / 2;
 
-	if (windowSurface == NULL) {
-	std::cout << "Canvas failed to get SDL window surface. SDL_Error: \n";
-		std::cout << SDL_GetError();
-		return;
-	}
+  // Clear, draw, and update
+  SDL_Surface *windowSurface = NULL;
+  windowSurface = SDL_GetWindowSurface(window);
+
+  if (windowSurface == NULL) {
+    std::cout << "Canvas failed to get SDL window surface. SDL_Error: \n";
+    std::cout << SDL_GetError();
+    return;
+  }
 
 	SDL_FillRect(windowSurface, NULL,
 		SDL_MapRGB(windowSurface->format, WHITE.r, WHITE.g, WHITE.b));
