@@ -47,8 +47,9 @@ int main(int argc, char* args[]) {
 				}
 			}
 
+			// Drawing test
+
 			// Draw the canvas to the application window
-			canvas->pixel(RED, 0, 0);
 			canvas->updateScreen(app->window);
 		}
 	}
