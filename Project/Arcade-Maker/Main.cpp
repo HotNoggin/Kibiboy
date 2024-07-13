@@ -2,9 +2,9 @@
 #include <iostream>
 #include <SDL.h>
 #include <string>
-#include "Canvas.h"
+#include "Drawing/Canvas.h"
 #include "Application.h"
-#include "Colors.h"
+#include "Drawing/Colors.h"
 
 
 int main(int argc, char* args[]) {
@@ -51,7 +51,7 @@ int main(int argc, char* args[]) {
 			// Test draw
 			for (int x = 0; x < Canvas::WIDTH; x++) {
 				for (int y = 0; y < Canvas::HEIGHT; y++) {
-					if ((x + y) % 5 == 0) {
+					if ((x + y) % 8 == 0) {
 						canvas->pixel(RED, x, y);
 					}
 				}

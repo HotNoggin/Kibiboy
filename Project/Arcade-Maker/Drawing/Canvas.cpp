@@ -1,5 +1,6 @@
 // Includes
 #include "Canvas.h"
+#include "Sprite.h"
 #include <algorithm>
 #include <iostream>
 #include <stdint.h>

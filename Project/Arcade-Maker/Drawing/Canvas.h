@@ -11,7 +11,7 @@ public:
 	static const int HEIGHT = 256;
 
 	// The surface that this canvas displays and draws to
-	SDL_Surface *canvasSurface;
+	SDL_Surface* canvasSurface;
 	// The color used to fill the canvas in clear()
 
 	bool initialize(Uint32 format);
