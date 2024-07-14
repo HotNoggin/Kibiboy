@@ -1,25 +1,32 @@
 // Includes
 #include <iostream>
 #include <SDL.h>
+#include <lua.hpp>
 #include <string>
 #include "Drawing/Canvas.h"
 #include "Application.h"
 #include "Drawing/Colors.h"
 
 
-void runTests(Canvas* canvas);
+void runCanvasTests(Canvas* canvas);
+void runLuaTests(lua_State* cart);
 
 
 int main(int argc, char* args[]) {
 
-	// Initialize SDL and launch the application
+	// Handles application operations like open, close, and window
 	Application* app = new Application();
 	bool appSuccess = app->initialize("Arcade Maker",
 		Canvas::WIDTH, Canvas::HEIGHT,
 		Canvas::WIDTH, Canvas::HEIGHT);
-	// Create and initialize the canvas
+
+	// Handles draw methods and displaying the surface to the window
 	Canvas* canvas = new Canvas();
 	bool canvasSuccess = canvas->initialize(SDL_GetWindowPixelFormat(app->window));
+
+	//The Lua state to run C++ code from Lua and Lua code from C++
+	lua_State* cart = NULL;
+	cart = luaL_newstate();
 
 	// Handle failures
 	if (!appSuccess) {
@@ -27,6 +34,9 @@ int main(int argc, char* args[]) {
 	}
 	else if (!canvasSuccess) {
 		std::cout << "Canvas failed to initialize.\n";
+	}
+	else if (cart == NULL) {
+		std::cout << "Failed to create lua state.\n";
 	}
 
 	// Total success!
@@ -36,6 +46,8 @@ int main(int argc, char* args[]) {
 		bool quit = false;
 		// The most recent event, to be set by SDL_PollEvent and checked in the main loop
 		SDL_Event event;
+
+		runLuaTests(cart);
 
 		// Main Loop
 		while (!quit) {
@@ -50,7 +62,7 @@ int main(int argc, char* args[]) {
 				}
 			}
 
-			runTests(canvas);
+			runCanvasTests(canvas);
 
 			// Draw the canvas to the application window
 			canvas->updateScreen(app->window);
@@ -67,7 +79,14 @@ int main(int argc, char* args[]) {
 }
 
 
-void runTests(Canvas* canvas) {
+void runLuaTests(lua_State* cart){
+	luaL_dostring(cart, "x = 'Hello From Lua!'");
+	lua_getglobal(cart, "x");
+	std::cout << lua_tostring(cart, -1);
+}
+
+
+void runCanvasTests(Canvas* canvas) {
 	// TESTS //
 	for (int x = 0; x < Canvas::WIDTH; x++) {
 		for (int y = 0; y < Canvas::HEIGHT; y++) {
