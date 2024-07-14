@@ -23,10 +23,10 @@
     <ClCompile Include="Drawing\Canvas.cpp" />
     <ClCompile Include="Drawing\Colors.cpp" />
     <ClCompile Include="Drawing\Sprite.cpp" />
-    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Cart\Gameloop.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Script.cpp" />
+    <ClCompile Include="Cart\Cart.cpp" />
     <ClCompile Include="Audio.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +34,7 @@
     <ClInclude Include="Drawing\Canvas.h" />
     <ClInclude Include="Drawing\Colors.h" />
     <ClInclude Include="Drawing\Sprite.h" />
+    <ClInclude Include="Cart\Gameloop.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lua54.dll" />

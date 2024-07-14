@@ -43,6 +43,8 @@ bool Application::initialize(const char* title, int w, int h, int min_w, int min
 
 // Destroys the window and quits SDL
 void Application::close() {
+	// Free surface
+	SDL_FreeSurface(SDL_GetWindowSurface(window));
 	// Destroy window
 	SDL_DestroyWindow(window);
 	window = NULL;
