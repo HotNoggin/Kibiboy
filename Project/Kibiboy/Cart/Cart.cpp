@@ -3,7 +3,7 @@
 #include <string>
 
 
-// Creates a new lua state
+// Creates a new lua state with the proper libraries
 bool Cart::initialize() {
 	state = luaL_newstate();
 	if (state == NULL) {
@@ -11,7 +11,10 @@ bool Cart::initialize() {
 		return false;
 	}
 
-	luaL_openlibs(state);
+	luaopen_base(state);
+	luaopen_table(state);
+	luaopen_math(state);
+	luaopen_string(state);
 
 	return true;
 }	
