@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Cart\Cart.h" />
     <ClInclude Include="Drawing\Canvas.h" />
     <ClInclude Include="Drawing\Colors.h" />
     <ClInclude Include="Drawing\Sprite.h" />
