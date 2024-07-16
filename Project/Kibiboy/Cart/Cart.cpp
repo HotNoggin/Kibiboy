@@ -1,4 +1,6 @@
+// Includes
 #include "Cart.h"
+#include "../KibiLibrary/KibiLib.h"
 #include "iostream"
 #include <string>
 
@@ -15,6 +17,7 @@ bool Cart::initialize() {
 	luaopen_table(state);
 	luaopen_math(state);
 	luaopen_string(state);
+	openKibilib(state);
 
 	return true;
 }	

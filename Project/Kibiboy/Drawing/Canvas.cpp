@@ -60,8 +60,8 @@ void Canvas::pixel(Color color, int x, int y) {
 	if (x < 0 || x >= canvasSurface->w || y < 0 || y >= canvasSurface->h) {
 		return;
 	}
-
 	SDL_LockSurface(canvasSurface);
+	
 	// Calculate the location of the pixel
 	Uint32* const target_pixel = (Uint32*)((Uint8*)canvasSurface->pixels
 		+ y * canvasSurface->pitch
