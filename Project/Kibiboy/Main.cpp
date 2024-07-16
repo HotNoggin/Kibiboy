@@ -2,16 +2,14 @@
 #include <iostream>
 #include <SDL.h>
 #include <lua.hpp>
+#include <lualib.h>
 #include <string>
 #include "Application.h"
 #include "Cart/Gameloop.h"
+#include "Cart/Cart.h"
+#include "KibiLibrary/Kibilib.h"
 #include "Drawing/Canvas.h"
 
-
-void runCanvasTests(Canvas* canvas);
-void runLuaTests(lua_State* cart);
-
-int offset = 0;
 
 // Hamster ©2024 Pineberry Fox, CC0
 Sprite hamsterSprite = {
@@ -31,18 +29,21 @@ int main(int argc, char* args[]) {
 		Canvas::WIDTH, Canvas::HEIGHT,
 		Canvas::WIDTH, Canvas::HEIGHT);
 
-	// Handles timing for update and draw calls to the cart
-	Gameloop* gameloop = new Gameloop(30);
-
+	// Handles the Lua script and calls to it from the C++ source
+	Cart* cart = new Cart();
+	bool cartSuccess = cart->initialize();
+	
+	// Handles calls to C++ source from the Lua script, and holds cart data
+	Kibiboy::instance = new Kibiboy();
+	
 	// Handles draw methods and displaying the surface to the window
 	Canvas* canvas = new Canvas();
 	bool canvasSuccess = canvas->initialize(
 		SDL_GetWindowPixelFormat(app->window));
-
-	// Handles calls to C++ code from Lua and calls to Lua code from C++
-	lua_State* cart = NULL;
-	cart = luaL_newstate();
-
+	
+	// Handles timing for update and draw calls to the cart
+	Gameloop* gameloop = new Gameloop(30);
+	
 	// Handle failures
 	if (!appSuccess) {
 		std::cout << "Application failed to initialize.\n";
@@ -50,8 +51,8 @@ int main(int argc, char* args[]) {
 	else if (!canvasSuccess) {
 		std::cout << "Canvas failed to initialize.\n";
 	}
-	else if (cart == NULL) {
-		std::cout << "Failed to create lua state.\n";
+	else if (!cartSuccess) {
+		std::cout << "Failed to create cart interface.\n";
 	}
 
 	// Total success!
@@ -64,6 +65,9 @@ int main(int argc, char* args[]) {
 		SDL_Event event;
 
 		gameloop->restart();
+		cart->run();
+		cart->boot();
+		Kibiboy::instance->canvas = canvas;
 
 		// Main Loop
 		while (!quit) {
@@ -78,10 +82,13 @@ int main(int argc, char* args[]) {
 				}
 			}
 
-			// Run the update method for every accumulated frame
+			// Run the update and draw methods for every accumulated frame
 			gameloop->tick();
 			while (gameloop->get_accumulated_frames() > 0) {
-				runCanvasTests(canvas);
+				cart->update();
+				cart->draw();
+				int type = lua_getglobal(cart->state, "frames");
+				cart->clearStack();
 				gameloop->use_accumulated_frames(1);
 			}
 
@@ -92,51 +99,12 @@ int main(int argc, char* args[]) {
 
 	// Free resources and close SDL
 	canvas->destroy();
+	cart->close();
 	app->close();
-	lua_close(cart);
 	delete canvas;
 	delete gameloop;
+	delete Kibiboy::instance;
 	delete app;
 	SDL_Quit();
 	return 0;
-}
-
-
-void runLuaTests(lua_State* cart){
-	luaL_dostring(cart, "x = 'Hello From Lua!'");
-	lua_getglobal(cart, "x");
-	std::cout << lua_tostring(cart, -1);
-	lua_remove(cart, -1);
-}
-
-
-void runCanvasTests(Canvas* canvas) {
-	offset = (offset + 1) % 32;
-
-	canvas->clear();
-
-	// TESTS //
-	for (int x = 0; x < Canvas::WIDTH; x++) {
-		for (int y = 0; y < Canvas::HEIGHT; y++) {
-			// Test pixels
-			if ((x + y) % 8 == 0) {
-				canvas->pixel(GREEN, x, y);
-			}
-			if (x % 5 == 0) {
-				canvas->pixel(BLACK, x, y);
-			}
-			if (y % 5 == 0) {
-				canvas->pixel(BLACK, x, y);
-			}
-		}
-	}
-
-	for (int x = -1; x < 11; x++) {
-		for (int y = -1; y < 9; y++) {
-			// Test rect
-			canvas->rect(BLACK, x * 32 + offset, y * 32 + 8, 16, 16);
-			// Test sprite
-			canvas->stamp(hamsterSprite, BROWN, x * 32 + offset, y * 32 + 8);
-		}
-	}
 }

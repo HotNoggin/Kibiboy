@@ -2,7 +2,7 @@
 #include <iostream>
 
 // The gameloop maintains a fixed update frequency.
-// Can determine when to update based on the elapsed time.
+// It can determine when to update based on the elapsed time.
 
 
 Gameloop::Gameloop() {}

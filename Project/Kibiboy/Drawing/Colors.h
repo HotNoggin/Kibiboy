@@ -9,7 +9,8 @@ struct Color {
 	int r, g, b;
 
 	Color();
-	Color(uint8_t red, uint8_t green, uint8_t blue);
+	Color(Uint8 index);
+	Color(Uint8 red, Uint8 green, Uint8 blue);
 
 	// Returns the color as a single integer using the specified format
 	// Shorthand for SDL_MapRGB(format, r, g, b);
