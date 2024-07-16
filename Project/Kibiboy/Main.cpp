@@ -9,6 +9,7 @@
 #include "Cart/Cart.h"
 #include "KibiLibrary/Kibilib.h"
 #include "Drawing/Canvas.h"
+#include "Input/Input.h"
 
 
 // Hamster ©2024 Pineberry Fox, CC0
@@ -58,33 +59,23 @@ int main(int argc, char* args[]) {
 	// Total success!
 	else
 	{
-		// When true, the main loop stops and the application quits.
-		bool quit = false;
-		// The most recent event
-		// Set by SDL_PollEvent and checked in the main loop.
-		SDL_Event event;
-
 		gameloop->restart();
 		cart->run();
 		cart->boot();
 		Kibiboy::instance->canvas = canvas;
 
 		// Main Loop
-		while (!quit) {
+		while (!quitQueued) {
 			// Event Handling
 			// Check all polled (queued) events.
 			// If there is an event, it is put in "event".
 			// SDL_PollEvent returns 0 if there are no events.
-			while (SDL_PollEvent(&event) != 0) {
-				// If the event is a quit event, quit!
-				if (event.type == SDL_QUIT) {
-					quit = true;
-				}
-			}
+			
 
 			// Run the update and draw methods for every accumulated frame
 			gameloop->tick();
 			while (gameloop->get_accumulated_frames() > 0) {
+				updateInput(app->window);
 				cart->update();
 				cart->draw();
 				int type = lua_getglobal(cart->state, "frames");

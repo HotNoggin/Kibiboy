@@ -19,6 +19,7 @@ public:
 	void pixel(Color color, int x, int y);
 	void rect(Color color, int x, int y, int w, int h);
 	void stamp(Sprite sprite, Color color, int x, int y);
-	void updateScreen(SDL_Window *window);
+	void updateScreen(SDL_Window* window);
+	static int getScale(int windowWidth, int windowHeight);
 	void destroy();
 };
