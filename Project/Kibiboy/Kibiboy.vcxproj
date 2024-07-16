@@ -25,7 +25,7 @@
     <ClCompile Include="Drawing\Colors.cpp" />
     <ClCompile Include="Drawing\Sprite.cpp" />
     <ClCompile Include="Cart\Gameloop.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Cart\Cart.cpp" />
     <ClCompile Include="Audio.cpp" />
@@ -33,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Cart\Cart.h" />
+    <ClInclude Include="Input\Input.h" />
     <ClInclude Include="KibiLibrary\KibiLib.h" />
     <ClInclude Include="Drawing\Canvas.h" />
     <ClInclude Include="Drawing\Colors.h" />

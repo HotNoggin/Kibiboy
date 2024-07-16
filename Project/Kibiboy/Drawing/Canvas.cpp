@@ -75,7 +75,7 @@ void Canvas::pixel(Color color, int x, int y) {
 }
 
 
-void Canvas::updateScreen(SDL_Window *window) {
+void Canvas::updateScreen(SDL_Window* window) {
 	if (window == NULL) {
 		std::cout << "The window passed to the canvas is invalid. SDL_Error:\n";
     std::cout << SDL_GetError();
@@ -92,47 +92,48 @@ void Canvas::updateScreen(SDL_Window *window) {
 	// The height of the window to draw to
 	int windowHeight = 0;
 
-	// The horizontal integer scale of the window compared to the base size
-	int horizontalScale = 1;
-	// The vertical integer scale of the window compared to the base size
-	int verticalScale = 1;
-
+	// Calculate scaled width and height
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+	int scale = getScale(windowWidth, windowHeight);
 
-	// Calculate the integer scale. horizontalScale and verticalScale have a 1:1
-	// ratio
-	horizontalScale = std::max(windowWidth / WIDTH, 1);
-	verticalScale = std::max(windowHeight / HEIGHT, 1);
-	if (horizontalScale > verticalScale) {
-		horizontalScale = verticalScale;
-	} else if (verticalScale > horizontalScale) {
-		verticalScale = horizontalScale;
-	}
-
-  
 	// Calculate the resulting width and height of the integer scale
-	canvasRect.w = WIDTH * horizontalScale;
-	canvasRect.h = HEIGHT * verticalScale;
+	canvasRect.w = WIDTH * scale;
+	canvasRect.h = HEIGHT * scale;
 
+	// Center the image
+	// The x is the window's horizontal center - half of the image width
+	// The y is the same, but vertical instead of horizontal
+	canvasRect.x = (windowWidth - canvasRect.w) / 2;
+	canvasRect.y = (windowHeight - canvasRect.h) / 2;
 
-  // Center the image
-  // The x is the window's horizontal center - half of the image width
-  // The y is the same, but vertical instead of horizontal
-  canvasRect.x = (windowWidth - canvasRect.w) / 2;
-  canvasRect.y = (windowHeight - canvasRect.h) / 2;
+	// Clear, draw, and update
+	SDL_Surface *windowSurface = NULL;
+	windowSurface = SDL_GetWindowSurface(window);
 
-  // Clear, draw, and update
-  SDL_Surface *windowSurface = NULL;
-  windowSurface = SDL_GetWindowSurface(window);
-
-  if (windowSurface == NULL) {
-    std::cout << "Canvas failed to get SDL window surface. SDL_Error: \n";
-    std::cout << SDL_GetError();
-    return;
-  }
+	if (windowSurface == NULL) {
+		std::cout << "Canvas failed to get SDL window surface. SDL_Error: \n";
+		std::cout << SDL_GetError();
+		return;
+	}
 
 	SDL_FillRect(windowSurface, NULL,
 		SDL_MapRGB(windowSurface->format, WHITE.r, WHITE.g, WHITE.b));
 	SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
 	SDL_UpdateWindowSurface(window);
+}
+
+
+// Calculate the integer scale of the window based on w and h
+int Canvas::getScale(int windowWidth, int windowHeight) {
+	// The horizontal integer scale of the window compared to the base size
+	int horizontalScale = 1;
+	// The vertical integer scale of the window compared to the base size
+	int verticalScale = 1;
+
+	// Calculate the integer scale. horizontalScale and verticalScale have a 1:1
+	// ratio
+	horizontalScale = std::max(windowWidth / WIDTH, 1);
+	verticalScale = std::max(windowHeight / HEIGHT, 1);
+
+	return std::min(horizontalScale, verticalScale);
 }
