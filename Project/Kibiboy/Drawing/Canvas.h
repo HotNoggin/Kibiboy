@@ -23,3 +23,7 @@ public:
 	static int getScale(int windowWidth, int windowHeight);
 	void destroy();
 };
+
+
+// Hamster ©2024 Pineberry Fox, CC0
+extern Sprite hamsterSprite;

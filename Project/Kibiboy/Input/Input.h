@@ -17,6 +17,7 @@ extern bool mouseDown;
 extern bool justClicked;
 
 void updateInput(SDL_Window* window);
+bool hovering(int x, int y, int w, int h);
 
 enum INPUT_EVENTS {
 	KEY_A,

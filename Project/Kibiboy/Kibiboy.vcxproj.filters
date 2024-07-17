@@ -75,6 +75,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Editor\Editor.h">
       <Filter>Header Files</Filter>
     </ClInclude>

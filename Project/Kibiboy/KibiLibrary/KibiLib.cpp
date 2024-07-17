@@ -50,7 +50,7 @@ int stamp(lua_State* state) {
 	int y = (int)lua_tonumber(state, 4);
 
 	Kibiboy::instance->canvas->stamp(
-		Kibiboy::instance->sprites[sprite], Color(color), x, y);
+		Kibiboy::instance->cart->sprites[sprite], Color(color), x, y);
 
 	return 0;
 }

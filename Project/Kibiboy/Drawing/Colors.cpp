@@ -20,8 +20,7 @@ Color::Color(Uint8 red, Uint8 green, Uint8 blue) {
 Color::Color(Uint8 index) {
 	Color colors[16] = {
 		BLACK, WHITE, RED, PINK, BROWN, ORANGE, PEACH, YELLOW,
-		DARK_GREEN, GREEN, DARK_BLUE, BLUE, DARK_PURPLE, LAVENDER,
-		DARK_GRAY, LIGHT_GRAY
+		GREEN, LIME, BLUE, TEAL, PURPLE, MAGENTA, DARK_GRAY, LIGHT_GRAY
 	};
 
 	Color selected = colors[index % 16];

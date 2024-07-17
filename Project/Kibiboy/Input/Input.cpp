@@ -50,8 +50,13 @@ void updateInput(SDL_Window* window){
 			int offsetX = (windowWidth - (Canvas::WIDTH * scale)) / 2;
 			int offsetY = (windowHeight - (Canvas::HEIGHT * scale)) / 2;
 			
-			mouseX = (event.motion.x / scale) - offsetX;
-			mouseY = (event.motion.y / scale) - offsetY;
+			mouseX = (event.motion.x - offsetX) / scale;
+			mouseY = (event.motion.y - offsetY) / scale;
 		}
 	}
+}
+
+
+bool hovering(int x, int y, int w, int h) {
+	return mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h;
 }

@@ -116,8 +116,7 @@ void Canvas::updateScreen(SDL_Window* window) {
 		return;
 	}
 
-	SDL_FillRect(windowSurface, NULL,
-		SDL_MapRGB(windowSurface->format, WHITE.r, WHITE.g, WHITE.b));
+	SDL_FillRect(windowSurface, NULL, WHITE.asInt(windowSurface->format));
 	SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
 	SDL_UpdateWindowSurface(window);
 }
@@ -137,3 +136,10 @@ int Canvas::getScale(int windowWidth, int windowHeight) {
 
 	return std::min(horizontalScale, verticalScale);
 }
+
+Sprite hamsterSprite = Sprite({
+	0x0000, 0x0000, 0x070c, 0x0f92,
+	0x1ff2, 0x1ff2, 0x1fd6, 0x0fd6,
+	0x05f2, 0x05e4, 0x0e08, 0x1e08,
+	0x706e, 0x7ffe, 0x0000, 0x0000
+});

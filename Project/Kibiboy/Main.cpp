@@ -10,23 +10,14 @@
 #include "KibiLibrary/Kibilib.h"
 #include "Drawing/Canvas.h"
 #include "Input/Input.h"
-
-
-// Hamster ©2024 Pineberry Fox, CC0
-Sprite hamsterSprite = {
-	hamsterSprite.pixelRows = {
-	0x0000, 0x0000, 0x070c, 0x0f92,
-	0x1ff2, 0x1ff2, 0x1fd6, 0x0fd6,
-	0x05f2, 0x05e4, 0x0e08, 0x1e08,
-	0x706e, 0x7ffe, 0x0000, 0x0000
-} };
+#include "Editor/Editor.h"
 
 
 int main(int argc, char* args[]) {
 
 	// Handles application operations like open, close, and window
 	Application* app = new Application();
-	bool appSuccess = app->initialize("Arcade Maker",
+	bool appSuccess = app->initialize("Kibiboy",
 		Canvas::WIDTH, Canvas::HEIGHT,
 		Canvas::WIDTH, Canvas::HEIGHT);
 
@@ -44,6 +35,9 @@ int main(int argc, char* args[]) {
 	
 	// Handles timing for update and draw calls to the cart
 	Gameloop* gameloop = new Gameloop(30);
+
+	// Handles editor data that is not saved to the cart
+	EditorState* editor = new EditorState();
 	
 	// Handle failures
 	if (!appSuccess) {
@@ -63,6 +57,7 @@ int main(int argc, char* args[]) {
 		cart->run();
 		cart->boot();
 		Kibiboy::instance->canvas = canvas;
+		Kibiboy::instance->cart = cart;
 
 		// Main Loop
 		while (!quitQueued) {
@@ -76,6 +71,7 @@ int main(int argc, char* args[]) {
 			gameloop->tick();
 			while (gameloop->get_accumulated_frames() > 0) {
 				updateInput(app->window);
+				updateEditor(canvas, editor, cart);
 				cart->update();
 				cart->draw();
 				int type = lua_getglobal(cart->state, "frames");
