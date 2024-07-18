@@ -31,7 +31,7 @@ void updateInput(SDL_Window* window){
 			quitQueued = true;
 		}
 
-		// MOUSE
+		// MOUSE CLICK
 		else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (!mouseDown) {
 				justClicked = true;
@@ -41,6 +41,8 @@ void updateInput(SDL_Window* window){
 		else if (event.type == SDL_MOUSEBUTTONUP) {
 			mouseDown = false;
 		}
+
+		// MOUSE POSITION
 		else if (event.type == SDL_MOUSEMOTION) {
 			int windowWidth = 0;
 			int windowHeight = 0;

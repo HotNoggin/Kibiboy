@@ -7,10 +7,13 @@
 
 struct EditorState {
 	Uint8 tab = 0;
+	
+	// Sprite tab and drawing state
+
 	Uint8 canvasColor = 0;
 	Uint8 spriteColor = 1;
-
 	Uint8 selectedSprite = 1;
+	bool eraseEnabled = false;
 };
 
 
