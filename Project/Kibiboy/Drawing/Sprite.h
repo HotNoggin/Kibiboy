@@ -1,5 +1,6 @@
 #pragma once
 
+// Includes
 #include <SDL.h>
 #include <array>
 

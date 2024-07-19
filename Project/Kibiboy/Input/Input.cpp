@@ -17,11 +17,16 @@ int mouseY = 0;
 bool mouseDown = false;
 bool justClicked = false;
 
+bool isCtrlDown = false;
+
+std::vector<std::string> textEvents = {};
+
 
 // Set all input variables according to the SDL input events
 void updateInput(SDL_Window* window){
 	SDL_Event event;
 	justClicked = false;
+	textEvents.clear();
 
 	// Check against every event in the event queue
 	while (SDL_PollEvent(&event) != 0) {
@@ -55,6 +60,15 @@ void updateInput(SDL_Window* window){
 			mouseX = (event.motion.x - offsetX) / scale;
 			mouseY = (event.motion.y - offsetY) / scale;
 		}
+
+		// Text
+		else if (event.type == SDL_TEXTINPUT) {
+			textEvents.push_back(event.text.text);
+			for (int i = 0; i < textEvents.size(); i++) {
+				std::cout << textEvents[i];
+				std::cout << "\n";
+			}
+		}
 	}
 }
 
@@ -62,3 +76,16 @@ void updateInput(SDL_Window* window){
 bool hovering(int x, int y, int w, int h) {
 	return mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h;
 }
+
+
+//bool typedChar(std::string text){
+//	// Check every string in the text events
+//	for (int strI = 0; strI < textEvents.size(); strI++) {
+//		strings
+//		// Check every character in the string
+//		for (int charI = 0; charI < textEvents) {
+//
+//		}
+//	}
+//	return false;
+//}

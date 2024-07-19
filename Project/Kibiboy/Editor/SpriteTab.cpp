@@ -9,7 +9,8 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	Sprite* selected = NULL;
 	selected = &cart->sprites[editor->selectedSprite];
 	if (selected == NULL) {
-		return;
+		cart->sprites[editor->selectedSprite] = Sprite();
+		selected = &cart->sprites[editor->selectedSprite];
 	}
 
 	// Sprite pixel editing
@@ -28,12 +29,26 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	else if (hovering(160, 32, 16 * 8, 16 * 8) and justClicked) {
 		int x = (mouseX - 160) / 32;
 		int y = (mouseY - 32) / 32;
-		editor->selectedSprite = (y * 4) + (x % 4);
+		int index = (y * 4) + (x % 4);
+		editor->selectedSprite = index;
 
 		Sprite* selected = NULL;
 		selected = &cart->sprites[editor->selectedSprite];
-		if (selected == NULL) {
-			cart->sprites[editor->selectedSprite] = Sprite();
+	}
+
+	// Color selection
+	else if (hovering(16 * 12, 160, 128, 64) and justClicked) {
+		int x = (mouseX - 16 * 12) / 16;
+		int y = (mouseY - 160) / 16;
+		int index = (y * 8) + (x % 8);
+
+		// Set canvas color if selecting from top 16 colors
+		if (index < 16) {
+			editor->canvasColor = index % 16;
+		}
+		// Set sprite color if selecting from bottom 16 colors
+		else {
+			editor->spriteColor = index % 16;
 		}
 	}
 }
@@ -73,6 +88,28 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	// Tool selection menu
 	canvas->stamp(hamsterSprite, editor->eraseEnabled? BLUE : YELLOW,
 		16 * 8 + 8, 40);
+
+	// Color selection menu
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 4; y++) {
+			int index = (y * 8) + (x % 8);
+			canvas->rect(Color(index),
+				x * 16 + 16 * 12 + 2, y * 16 + 162, 12, 12);
+			
+			// Selected colors
+			if (index % 16 == editor->canvasColor && index < 16) {
+				canvas->stamp(hamsterSprite,
+					index % 16 == 0 ? WHITE : BLACK,
+					x * 16 + 16 * 12, y * 16 + 160);
+			}
+			if (index % 16 == editor->spriteColor && index > 15) {
+				canvas->stamp(hamsterSprite,
+					index % 16 == 0 ? WHITE : BLACK,
+					x * 16 + 16 * 12, y * 16 + 160);
+			}
+			
+		}
+	}
 
 	// Get sprite
 	Sprite* selected = NULL;

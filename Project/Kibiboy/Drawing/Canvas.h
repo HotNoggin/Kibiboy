@@ -2,6 +2,7 @@
 
 #include "Colors.h"
 #include "Sprite.h"
+#include "Character.h"
 #include <SDL.h>
 
 
@@ -19,6 +20,7 @@ public:
 	void pixel(Color color, int x, int y);
 	void rect(Color color, int x, int y, int w, int h);
 	void stamp(Sprite sprite, Color color, int x, int y);
+	void glyph(char character, Color color, int x, int y);
 	void updateScreen(SDL_Window* window);
 	static int getScale(int windowWidth, int windowHeight);
 	void destroy();
