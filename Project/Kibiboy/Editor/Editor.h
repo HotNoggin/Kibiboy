@@ -5,6 +5,12 @@
 #include "../Cart/Cart.h"
 
 
+enum TOOLS {
+	TOOL_PENCIL,
+	TOOL_RECT,
+};
+
+
 struct EditorState {
 	Uint8 tab = 0;
 	
@@ -14,6 +20,7 @@ struct EditorState {
 	Uint8 spriteColor = 1;
 	Uint8 selectedSprite = 1;
 	bool eraseEnabled = false;
+	Uint8 spriteTool = TOOL_PENCIL;
 };
 
 

@@ -14,12 +14,16 @@ bool quitQueued = false;
 
 int mouseX = 0;
 int mouseY = 0;
+int mouseDownX = 0;
+int mouseDownY = 0;
 bool mouseDown = false;
 bool justClicked = false;
 
-bool isCtrlDown = false;
+bool isLCtrlDown = false;
+bool isRCtrlDown = false;
 
 std::vector<std::string> textEvents = {};
+std::vector<int> keyEvents = {};
 
 
 // Set all input variables according to the SDL input events
@@ -27,6 +31,7 @@ void updateInput(SDL_Window* window){
 	SDL_Event event;
 	justClicked = false;
 	textEvents.clear();
+	keyEvents.clear();
 
 	// Check against every event in the event queue
 	while (SDL_PollEvent(&event) != 0) {
@@ -40,6 +45,8 @@ void updateInput(SDL_Window* window){
 		else if (event.type == SDL_MOUSEBUTTONDOWN) {
 			if (!mouseDown) {
 				justClicked = true;
+				mouseDownX = mouseX;
+				mouseDownY = mouseY;
 			}
 			mouseDown = true;
 		}
@@ -64,28 +71,46 @@ void updateInput(SDL_Window* window){
 		// Text
 		else if (event.type == SDL_TEXTINPUT) {
 			textEvents.push_back(event.text.text);
-			for (int i = 0; i < textEvents.size(); i++) {
-				std::cout << textEvents[i];
-				std::cout << "\n";
+		}
+
+		// Control and letter keys
+		else if (event.type == SDL_KEYDOWN) {
+			if (event.key.keysym.scancode == SDL_SCANCODE_LCTRL) {
+				isLCtrlDown = true;
+			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_RCTRL) {
+				isRCtrlDown = true;
+			}
+
+			else if (event.key.keysym.sym >= SDLK_a &&
+				event.key.keysym.sym <= SDLK_z) {
+				keyEvents.push_back(event.key.keysym.sym);
+			}
+		}
+		else if (event.type == SDL_KEYUP) {
+			if (event.key.keysym.scancode == SDL_SCANCODE_LCTRL) {
+				isLCtrlDown = false;
+			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_RCTRL) {
+				isRCtrlDown = false;
 			}
 		}
 	}
 }
 
 
+// Returns true if the mouse position is inside of the bounds
 bool hovering(int x, int y, int w, int h) {
 	return mouseX >= x && mouseY >= y && mouseX < x + w && mouseY < y + h;
 }
 
 
-//bool typedChar(std::string text){
-//	// Check every string in the text events
-//	for (int strI = 0; strI < textEvents.size(); strI++) {
-//		strings
-//		// Check every character in the string
-//		for (int charI = 0; charI < textEvents) {
-//
-//		}
-//	}
-//	return false;
-//}
+// Returns true if the specified key was just pressed this frame
+bool keyPress(int keysym) {
+	for (int i = 0; i < keyEvents.size(); i++) {
+		if (keyEvents[i] == keysym) {
+			return true;
+		}
+	}
+	return false;
+}

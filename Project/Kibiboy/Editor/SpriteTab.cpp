@@ -25,6 +25,16 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		editor->eraseEnabled = !editor->eraseEnabled;
 	}
 
+	// Rect tool [BROKEN]
+	else if (hovering(16 * 8, 64, 32, 32) and justClicked) {
+		if (editor->spriteTool == TOOL_PENCIL) {
+			editor->spriteTool == TOOL_RECT;
+		}
+		else {
+			editor->spriteTool == TOOL_PENCIL;
+		}
+	}
+
 	// Sprite selection
 	else if (hovering(160, 32, 16 * 8, 16 * 8) and justClicked) {
 		int x = (mouseX - 160) / 32;
@@ -49,6 +59,28 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		// Set sprite color if selecting from bottom 16 colors
 		else {
 			editor->spriteColor = index % 16;
+		}
+	}
+
+	// Export (Made for debugging and engine dev only)
+	if ((isLCtrlDown || isRCtrlDown) && keyPress(SDLK_e)) {
+		std::cout << "Exporting Sprites...\n";
+
+		// Iterate over every sprite in the cart
+		for (int i = 0; i < cart->sprites.size(); i++) {
+			Sprite sprite = cart->sprites[i];
+			// Start
+			std::cout << "Sprite({";
+
+			// Export every pixel row in hex form, followed by a comma
+			for (int row = 0; row < 16; row++) {
+				std::cout << std::hex << sprite.pixelRows[row];
+				if (row < 15) {
+					std::cout << ", ";
+				}
+			}
+			// End
+			std::cout << "}), \n";
 		}
 	}
 }
@@ -88,6 +120,9 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	// Tool selection menu
 	canvas->stamp(hamsterSprite, editor->eraseEnabled? BLUE : YELLOW,
 		16 * 8 + 8, 40);
+	canvas->stamp(hamsterSprite,
+		editor->spriteTool == TOOL_RECT ? YELLOW : BLUE,
+		16 * 8 + 8, 72);
 
 	// Color selection menu
 	for (int x = 0; x < 8; x++) {
