@@ -47,7 +47,7 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		}
 	}
 
-	// Grid
+	// Canvas grid
 	else if (hovering(16 * 8, 96, 32, 32) and justClicked) {
 		editor->isSpriteGridOn = !editor->isSpriteGridOn;
 	}
@@ -56,11 +56,17 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	else if (hovering(160, 32, 16 * 8, 16 * 8) and justClicked) {
 		int x = (mouseX - 160) / 32;
 		int y = (mouseY - 32) / 32;
-		int index = (y * 4) + (x % 4);
+		int index = (editor->spriteSection * 16) + (y * 4) + (x % 4);
 		editor->selectedSprite = index;
-
-		Sprite* selected = NULL;
 		selected = &cart->sprites[editor->selectedSprite];
+	}
+
+	// Section selection
+	else if (hovering(16 * 18, 32, 32, 16 * 8) and justClicked) {
+		int x = (mouseX - 16 *18) / 16;
+		int y = (mouseY - 32) / 16;
+		int index = (y * 2) + (x % 2);
+		editor->spriteSection = index;
 	}
 
 	// Color selection
@@ -113,13 +119,13 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 
 
 void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
-	// Background
+	// Sprite canvas background
 	canvas->rect(editor->canvasColor, 0, 32, 16 * 8, 16 * 8);
 
 	// Sprite selection menu
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
-			int index = (y * 4) + (x % 4);
+			int index = (editor->spriteSection * 16) + (y * 4) + (x % 4);
 
 			Color iconColor = WHITE;
 			Color lineColor = WHITE;
@@ -138,8 +144,18 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 
 			canvas->rect(lineColor, x * 32 + 160, y * 32 + 32, 32, 32);
 			canvas->rect(rectColor, x * 32 + 162, y * 32 + 34, 28, 28);
-			canvas->stamp(cart->sprites[index], iconColor,
-				x * 32 + 160 + 8, y * 32 + 32 + 8);
+			canvas->stamp(
+				cart->sprites[index],
+				iconColor, x * 32 + 160 + 8, y * 32 + 32 + 8);
+		}
+	}
+
+	// Section selection menu
+	for (int x = 0; x < 2; x++) {
+		for (int y = 0; y < 8; y++) {
+			int index = (y * 2) + (x % 2);
+			canvas->rect( index == editor->spriteSection ? YELLOW : BLUE,
+				x * 16 + 16 * 18 + 2, y * 16 + 32 + 2, 12, 12);
 		}
 	}
 
@@ -171,7 +187,6 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 					index % 16 == 0 ? WHITE : BLACK,
 					x * 16 + 16 * 12, y * 16 + 160);
 			}
-			
 		}
 	}
 
@@ -182,7 +197,7 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 		return;
 	}
 
-	// Grid
+	// Sprite canvas grid
 	if (editor->isSpriteGridOn) {
 		for (int x = 0; x < 5; x++) {
 			canvas->rect(editor->spriteColor, x * 32, 32, 1, 16 * 8);

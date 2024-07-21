@@ -20,6 +20,7 @@ struct EditorState {
 	Uint8 canvasColor = 0;
 	Uint8 spriteColor = 1;
 	Uint8 selectedSprite = 1;
+	Uint8 spriteSection = 0;
 	bool isSpriteEraserOn = false;
 	bool isSpriteGridOn = false;
 	Uint8 spriteTool = TOOL_PENCIL;
