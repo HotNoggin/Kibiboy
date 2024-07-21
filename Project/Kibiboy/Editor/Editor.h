@@ -13,13 +13,15 @@ enum TOOLS {
 
 struct EditorState {
 	Uint8 tab = 0;
+	Uint8 cursor = 0;
 	
 	// Sprite tab and drawing state
 
 	Uint8 canvasColor = 0;
 	Uint8 spriteColor = 1;
 	Uint8 selectedSprite = 1;
-	bool eraseEnabled = false;
+	bool isSpriteEraserOn = false;
+	bool isSpriteGridOn = false;
 	Uint8 spriteTool = TOOL_PENCIL;
 };
 
@@ -35,4 +37,11 @@ enum EDITOR_TABS {
 };
 
 
+enum CURSOR_MODES {
+	CURSOR_POINT,
+	CURSOR_BRUSH
+};
+
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart);
+
+extern Sprite selector;

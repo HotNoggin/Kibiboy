@@ -4,6 +4,15 @@
 #include <iostream>
 
 
+Sprite eraserIcon = Sprite({
+	0x0, 0x60, 0xf0, 0x1f8, 0x3fc, 0x7fe, 0xfff, 0x1fff,
+	0x2ffe, 0x47fc, 0x83f8, 0x81f0, 0x40e0, 0x2040, 0x1080, 0xf00 });
+
+Sprite gridIcon = Sprite({
+	0xffff, 0x8421, 0x8421, 0x8421, 0x8421, 0xffff, 0x8421, 0x8421,
+	0x8421, 0x8421, 0xffff, 0x8421, 0x8421, 0x8421, 0x8421, 0xffff });
+
+
 void updateSpriteTab(EditorState* editor, Cart* cart){
 	// Get sprite
 	Sprite* selected = NULL;
@@ -17,22 +26,30 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	if (hovering(0, 32, 16 * 8, 16 * 8) and mouseDown) {
 		int x = mouseX / 8;
 		int y = (mouseY - 32) / 8;
-		selected->setPixel(!editor->eraseEnabled, x , y);
+		selected->setPixel(!editor->isSpriteEraserOn, x , y);
 	}
 
 	// Draw / Erase mode
 	else if (hovering(16 * 8, 32, 32, 32) and justClicked) {
-		editor->eraseEnabled = !editor->eraseEnabled;
+		editor->isSpriteEraserOn = !editor->isSpriteEraserOn;
 	}
 
-	// Rect tool [BROKEN]
+	// Rect tool
 	else if (hovering(16 * 8, 64, 32, 32) and justClicked) {
+		std::cout << "Click!\n";
 		if (editor->spriteTool == TOOL_PENCIL) {
-			editor->spriteTool == TOOL_RECT;
+			std::cout << "RECT\n";
+			editor->spriteTool = TOOL_RECT;
 		}
 		else {
-			editor->spriteTool == TOOL_PENCIL;
+			editor->spriteTool = TOOL_PENCIL;
+			std::cout << "PENCIL\n";
 		}
+	}
+
+	// Grid
+	else if (hovering(16 * 8, 96, 32, 32) and justClicked) {
+		editor->isSpriteGridOn = !editor->isSpriteGridOn;
 	}
 
 	// Sprite selection
@@ -63,18 +80,19 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	}
 
 	// Export (Made for debugging and engine dev only)
+	// Only exports the first page (first 16 sprites)
 	if ((isLCtrlDown || isRCtrlDown) && keyPress(SDLK_e)) {
 		std::cout << "Exporting Sprites...\n";
 
 		// Iterate over every sprite in the cart
-		for (int i = 0; i < cart->sprites.size(); i++) {
+		for (int i = 0; i < 16; i++) {
 			Sprite sprite = cart->sprites[i];
 			// Start
 			std::cout << "Sprite({";
 
 			// Export every pixel row in hex form, followed by a comma
 			for (int row = 0; row < 16; row++) {
-				std::cout << std::hex << sprite.pixelRows[row];
+				std::cout << "0x" << std::hex << sprite.pixelRows[row];
 				if (row < 15) {
 					std::cout << ", ";
 				}
@@ -82,6 +100,14 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 			// End
 			std::cout << "}), \n";
 		}
+	}
+
+	// Cursor
+	if (hovering(0, 32, 16 * 8, 16 * 8)) {
+		editor->cursor = CURSOR_BRUSH;
+	}
+	else {
+		editor->cursor = CURSOR_POINT;
 	}
 }
 
@@ -118,11 +144,14 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	}
 
 	// Tool selection menu
-	canvas->stamp(hamsterSprite, editor->eraseEnabled? BLUE : YELLOW,
+	canvas->stamp(eraserIcon, editor->isSpriteEraserOn? YELLOW : BLUE,
 		16 * 8 + 8, 40);
 	canvas->stamp(hamsterSprite,
 		editor->spriteTool == TOOL_RECT ? YELLOW : BLUE,
 		16 * 8 + 8, 72);
+	canvas->stamp(gridIcon,
+		editor->isSpriteGridOn ? YELLOW : BLUE,
+		16 * 8 + 8, 104);
 
 	// Color selection menu
 	for (int x = 0; x < 8; x++) {
@@ -133,12 +162,12 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 			
 			// Selected colors
 			if (index % 16 == editor->canvasColor && index < 16) {
-				canvas->stamp(hamsterSprite,
+				canvas->stamp(selector,
 					index % 16 == 0 ? WHITE : BLACK,
 					x * 16 + 16 * 12, y * 16 + 160);
 			}
 			if (index % 16 == editor->spriteColor && index > 15) {
-				canvas->stamp(hamsterSprite,
+				canvas->stamp(selector,
 					index % 16 == 0 ? WHITE : BLACK,
 					x * 16 + 16 * 12, y * 16 + 160);
 			}
@@ -151,6 +180,16 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	selected = &cart->sprites[editor->selectedSprite];
 	if (selected == NULL) {
 		return;
+	}
+
+	// Grid
+	if (editor->isSpriteGridOn) {
+		for (int x = 0; x < 5; x++) {
+			canvas->rect(editor->spriteColor, x * 32, 32, 1, 16 * 8);
+		}
+		for (int y = 0; y < 5; y++) {
+			canvas->rect(editor->spriteColor, 0, y * 32 + 32, 16 * 8, 1);
+		}
 	}
 
 	// Sprite at 8x size

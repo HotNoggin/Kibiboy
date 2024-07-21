@@ -131,7 +131,7 @@ void Canvas::updateScreen(SDL_Window* window) {
 		return;
 	}
 
-	SDL_FillRect(windowSurface, NULL, WHITE.asInt(windowSurface->format));
+	SDL_FillRect(windowSurface, NULL, BLACK.asInt(windowSurface->format));
 	SDL_BlitScaled(canvasSurface, NULL, windowSurface, &canvasRect);
 	SDL_UpdateWindowSurface(window);
 }
@@ -152,6 +152,8 @@ int Canvas::getScale(int windowWidth, int windowHeight) {
 	return std::min(horizontalScale, verticalScale);
 }
 
+
+// Hamster ©2024 Pineberry Fox, CC0
 Sprite hamsterSprite = Sprite({
 	0x0000, 0x0000, 0x070c, 0x0f92,
 	0x1ff2, 0x1ff2, 0x1fd6, 0x0fd6,
