@@ -47,12 +47,13 @@ void Canvas::stamp(Sprite sprite, Color color, int x, int y) {
 // Copy a character to the canvas at the specified position
 // (place a colored pixel on the canvas for each true pixel on the glyph)
 void Canvas::glyph(char character, Color color, int x, int y) {
-	Character graphic = font [character];
+	Character graphic = font[character];
 
 	for (int pixel_x = 0; pixel_x < 8; pixel_x++) {
 		for (int pixel_y = 0; pixel_y < 16; pixel_y++) {
 			if (graphic.getPixel(pixel_x, pixel_y)) {
 				pixel(color, x + pixel_x, y + pixel_y);
+				std::cout << pixel_y << "\n";
 			}
 		}
 	}

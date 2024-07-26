@@ -40,6 +40,9 @@ end
 			0xffff, 0xfc3f, 0xfe7f, 0xffff })
 	};
 
+	// Flag data loaded from a .kibi cart
+	std::array<Uint8, 256> flags = {};
+
 	lua_State* state = NULL;
 
 	void run();

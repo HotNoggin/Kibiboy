@@ -12,30 +12,33 @@ Sprite gridIcon = Sprite({
 	0xffff, 0x8421, 0x8421, 0x8421, 0x8421, 0xffff, 0x8421, 0x8421,
 	0x8421, 0x8421, 0xffff, 0x8421, 0x8421, 0x8421, 0x8421, 0xffff });
 
+Sprite trashIcon = Sprite({
+	0x3c0, 0x0, 0xffff, 0x0, 0x7ffe, 0x7ffe, 0x73ce, 0x718e,
+	0x381c, 0x3c3c, 0x3c3c, 0x381c, 0x318c, 0x13c8, 0x1ff8, 0x1ff8 });
+
 
 void updateSpriteTab(EditorState* editor, Cart* cart){
 	// Get sprite
-	Sprite* selected = NULL;
-	selected = &cart->sprites[editor->selectedSprite];
-	if (selected == NULL) {
+	Sprite* openedSprite = &cart->sprites[editor->selectedSprite];
+	if (openedSprite == NULL) {
 		cart->sprites[editor->selectedSprite] = Sprite();
-		selected = &cart->sprites[editor->selectedSprite];
+		openedSprite = &cart->sprites[editor->selectedSprite];
 	}
 
 	// Sprite pixel editing
-	if (hovering(0, 32, 16 * 8, 16 * 8) and mouseDown) {
+	if (hovering(0, 32, 16 * 8, 16 * 8) && mouseDown) {
 		int x = mouseX / 8;
 		int y = (mouseY - 32) / 8;
-		selected->setPixel(!editor->isSpriteEraserOn, x , y);
+		openedSprite->setPixel(!editor->isSpriteEraserOn, x , y);
 	}
 
 	// Draw / Erase mode
-	else if (hovering(16 * 8, 32, 32, 32) and justClicked) {
+	else if (hovering(16 * 8, 32, 32, 32) && justClicked) {
 		editor->isSpriteEraserOn = !editor->isSpriteEraserOn;
 	}
 
 	// Rect tool
-	else if (hovering(16 * 8, 64, 32, 32) and justClicked) {
+	else if (hovering(16 * 8, 64, 32, 32) && justClicked) {
 		std::cout << "Click!\n";
 		if (editor->spriteTool == TOOL_PENCIL) {
 			std::cout << "RECT\n";
@@ -48,21 +51,26 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	}
 
 	// Canvas grid
-	else if (hovering(16 * 8, 96, 32, 32) and justClicked) {
+	else if (hovering(16 * 8, 96, 32, 32) && justClicked) {
 		editor->isSpriteGridOn = !editor->isSpriteGridOn;
 	}
 
+	// Delete sprite
+	else if (hovering(16 * 8, 128, 32, 32) && justClicked) {
+		*openedSprite = Sprite();
+	}
+
 	// Sprite selection
-	else if (hovering(160, 32, 16 * 8, 16 * 8) and justClicked) {
+	else if (hovering(160, 32, 16 * 8, 16 * 8) && justClicked) {
 		int x = (mouseX - 160) / 32;
 		int y = (mouseY - 32) / 32;
 		int index = (editor->spriteSection * 16) + (y * 4) + (x % 4);
 		editor->selectedSprite = index;
-		selected = &cart->sprites[editor->selectedSprite];
+		openedSprite = &cart->sprites[editor->selectedSprite];
 	}
 
 	// Section selection
-	else if (hovering(16 * 18, 32, 32, 16 * 8) and justClicked) {
+	else if (hovering(16 * 18, 32, 32, 16 * 8) && justClicked) {
 		int x = (mouseX - 16 *18) / 16;
 		int y = (mouseY - 32) / 16;
 		int index = (y * 2) + (x % 2);
@@ -70,7 +78,7 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	}
 
 	// Color selection
-	else if (hovering(16 * 12, 160, 128, 64) and justClicked) {
+	else if (hovering(16 * 12, 160, 128, 64) && justClicked) {
 		int x = (mouseX - 16 * 12) / 16;
 		int y = (mouseY - 160) / 16;
 		int index = (y * 8) + (x % 8);
@@ -85,12 +93,12 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		}
 	}
 
-	// Export (Made for debugging and engine dev only)
+	// Sprite export (Made for debugging and engine dev only)
 	// Only exports the first page (first 16 sprites)
 	if ((isLCtrlDown || isRCtrlDown) && keyPress(SDLK_e)) {
 		std::cout << "Exporting Sprites...\n";
 
-		// Iterate over every sprite in the cart
+		// Iterate over the first 16 sprites in the cart
 		for (int i = 0; i < 16; i++) {
 			Sprite sprite = cart->sprites[i];
 			// Start
@@ -105,6 +113,43 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 			}
 			// End
 			std::cout << "}), \n";
+		}
+	}
+
+	// Font export (Made for debugging and engine dev only)
+	// Exports all 256 sprites using font formatting
+	// The characters should only use the RIGHT 8 of their 16 pixels
+	if ((isLCtrlDown || isRCtrlDown) && keyPress(SDLK_t)) {
+		std::cout << "Exporting font...\n";
+
+		// Iterate over every sprite in the cart
+		for (int i = 0; i < 256; i++) {
+			std::string characters =
+				"!\"#$%&'()*+,-./0"
+				"123456789:;<=>?@"
+				"ABCDEFGHIJKLMNOP"
+				"QRSTUVWXYZ[\\]^_`"
+				"abcdefghijklmnop"
+				"qrstuvwxyz{|}~ей";
+
+			Sprite sprite = cart->sprites[i];
+
+			if (i > characters.size()) {
+				break;
+			}
+
+			// Start
+			std::cout << "{'" << characters[i] << "', Character({";
+
+			// Export every pixel row in hex form, followed by a comma
+			for (int row = 0; row < 16; row++) {
+				std::cout << "0x" << std::hex << sprite.pixelRows[row];
+				if (row < 15) {
+					std::cout << ", ";
+				}
+			}
+			// End
+			std::cout << "})}, \n";
 		}
 	}
 
@@ -168,6 +213,7 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	canvas->stamp(gridIcon,
 		editor->isSpriteGridOn ? YELLOW : BLUE,
 		16 * 8 + 8, 104);
+	canvas->stamp(trashIcon, RED, 16 * 8 + 8, 136);
 
 	// Color selection menu
 	for (int x = 0; x < 8; x++) {
@@ -215,4 +261,7 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 			}
 		}
 	}
+
+	// Test glyph
+	canvas->glyph('A', WHITE, 0, 0);
 }
