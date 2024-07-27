@@ -125,8 +125,8 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		// Iterate over every sprite in the cart
 		for (int i = 0; i < 256; i++) {
 			std::string characters =
-				"!\"#$%&'()*+,-./0"
-				"123456789:;<=>?@"
+				"!?\"#$%&'()*+,-./"
+				"1234567890:;<=>@"
 				"ABCDEFGHIJKLMNOP"
 				"QRSTUVWXYZ[\\]^_`"
 				"abcdefghijklmnop"
@@ -146,6 +146,9 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 				std::cout << "0x" << std::hex << sprite.pixelRows[row];
 				if (row < 15) {
 					std::cout << ", ";
+				}
+				if (row == 7) {
+					std::cout << "\n";
 				}
 			}
 			// End
@@ -186,7 +189,6 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 				lineColor = BLACK;
 				rectColor = BLUE;
 			}
-
 			canvas->rect(lineColor, x * 32 + 160, y * 32 + 32, 32, 32);
 			canvas->rect(rectColor, x * 32 + 162, y * 32 + 34, 28, 28);
 			canvas->stamp(
@@ -198,9 +200,18 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	// Section selection menu
 	for (int x = 0; x < 2; x++) {
 		for (int y = 0; y < 8; y++) {
+			Color color = BLUE;
 			int index = (y * 2) + (x % 2);
-			canvas->rect( index == editor->spriteSection ? YELLOW : BLUE,
-				x * 16 + 16 * 18 + 2, y * 16 + 32 + 2, 12, 12);
+			if (index == editor->spriteSection) {
+				color = YELLOW;
+			}
+			else if ((x % 2 == 0 && y % 2 == 1) ||
+				(y % 2 == 0 && x % 2 == 1)) {
+				color = PURPLE;
+			}
+			
+			canvas->text(numberAsText(index, 2), color,
+				x * 16 + 16 * 18, y * 16 + 32);
 		}
 	}
 
@@ -261,7 +272,4 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 			}
 		}
 	}
-
-	// Test glyph
-	canvas->glyph('A', WHITE, 0, 0);
 }

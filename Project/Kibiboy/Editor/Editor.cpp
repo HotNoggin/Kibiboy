@@ -52,9 +52,10 @@ Sprite tabIcons[5] = {
 };
 
 
-void drawCursor(Canvas* canvas, EditorState* editor);
+void drawCursor(EditorState* editor, Canvas* canvas);
 void updateBaseUI(EditorState* editor);
 void drawBaseUI(EditorState* editor, Canvas* canvas);
+void drawFooter(EditorState* editor, Canvas* canvas, Cart* cart);
 
 
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart) {
@@ -70,11 +71,12 @@ void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart) {
 	default:
 		break;
 	}
-	drawCursor(canvas, editor);
+	drawFooter(editor, canvas, cart);
+	drawCursor(editor, canvas);
 }
 
 
-void drawCursor(Canvas* canvas, EditorState* editor) {
+void drawCursor(EditorState* editor, Canvas* canvas) {
 	Sprite outline = cursorOutline;
 	Sprite fill = cursorFill;
 
@@ -135,4 +137,18 @@ void drawBaseUI(EditorState* editor, Canvas* canvas) {
 			canvas->stamp(tabIcons[x], BLACK, x * 32 + 9, 8);
 		}
 	}
+}
+
+
+void drawFooter(EditorState* editor, Canvas* canvas, Cart* cart) {
+	canvas->text("KIBIBOY V0.0.1: " + cart->name, WHITE, 0, 16 * 15);
+}
+
+
+std::string numberAsText(int number, int minLength) {
+	std::string textNumber = std::to_string(number);
+	while (textNumber.size() < minLength) {
+		textNumber = "0" + textNumber;
+	}
+	return textNumber;
 }

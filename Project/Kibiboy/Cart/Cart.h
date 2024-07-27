@@ -10,6 +10,7 @@
 // Also holds the Lua script and manages the state.
 class Cart{
 public:
+	std::string name = "MY_CART.KIBI";
 	std::string script = R"(
 function _boot()
 

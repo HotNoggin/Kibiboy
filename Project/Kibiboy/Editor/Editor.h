@@ -3,6 +3,7 @@
 // Includes
 #include "../Drawing/Canvas.h"
 #include "../Cart/Cart.h"
+#include <string>
 
 
 enum TOOLS {
@@ -14,6 +15,7 @@ enum TOOLS {
 struct EditorState {
 	Uint8 tab = 0;
 	Uint8 cursor = 0;
+	std::string footerText = "";
 	
 	// Sprite tab and drawing state
 
@@ -44,5 +46,6 @@ enum CURSOR_MODES {
 };
 
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart);
+std::string numberAsText(int number, int minLength);
 
 extern Sprite selector;

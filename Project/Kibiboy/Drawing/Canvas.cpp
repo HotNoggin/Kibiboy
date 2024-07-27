@@ -8,8 +8,8 @@
 
 bool Canvas::initialize(Uint32 format) {
 	bool success = true;
-	canvasSurface = SDL_CreateRGBSurfaceWithFormat(0, Canvas::WIDTH,
-                                                 Canvas::HEIGHT, 32, format);
+	canvasSurface = SDL_CreateRGBSurfaceWithFormat(0,
+		Canvas::WIDTH, Canvas::HEIGHT, 32, format);
 
 	if (canvasSurface == NULL) {
 		success = false;
@@ -53,12 +53,19 @@ void Canvas::glyph(char character, Color color, int x, int y) {
 		for (int pixel_y = 0; pixel_y < 16; pixel_y++) {
 			if (graphic.getPixel(pixel_x, pixel_y)) {
 				pixel(color, x + pixel_x, y + pixel_y);
-				std::cout << pixel_y << "\n";
 			}
 		}
 	}
 }
 
+
+// Writes a string of characters to the screen at the specified position
+// This does not work properly with all of unicode and should be improved.
+void Canvas::text(std::string text, Color color, int x, int y) {
+	for (int i = 0; i < text.size(); i++) {
+		glyph(text[i], color, x + (i * 8), y);
+	}
+}
 
 // Fill a rectangular area of pixels with the specified color
 void Canvas::rect(Color color, int x, int y, int w, int h) {
