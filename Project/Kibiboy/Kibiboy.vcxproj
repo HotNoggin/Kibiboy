@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Drawing\Character.cpp" />
+    <ClCompile Include="Editor\Editor.cpp" />
+    <ClCompile Include="Editor\SpriteTab.cpp" />
     <ClCompile Include="KibiLibrary\KibiLib.cpp" />
     <ClCompile Include="Drawing\Canvas.cpp" />
     <ClCompile Include="Drawing\Colors.cpp" />
@@ -33,7 +36,10 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Cart\Cart.h" />
+    <ClInclude Include="Drawing\Character.h" />
     <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Editor\Editor.h" />
+    <ClInclude Include="Editor\SpriteTab.h" />
     <ClInclude Include="KibiLibrary\KibiLib.h" />
     <ClInclude Include="Drawing\Canvas.h" />
     <ClInclude Include="Drawing\Colors.h" />

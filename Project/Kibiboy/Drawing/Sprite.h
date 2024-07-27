@@ -1,5 +1,6 @@
 #pragma once
 
+// Includes
 #include <SDL.h>
 #include <array>
 
@@ -10,4 +11,5 @@ public:
 	Sprite();
 	Sprite(std::array<Uint16, 16> pixels);
 	bool getPixel(Uint8 x, Uint8 y);
+	void setPixel(bool pixel, Uint8 x, Uint8 y);
 };
