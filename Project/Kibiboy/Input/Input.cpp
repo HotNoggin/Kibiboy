@@ -17,6 +17,7 @@ int mouseY = 0;
 int mouseDownX = 0;
 int mouseDownY = 0;
 bool mouseDown = false;
+bool rightMouseDown = false;
 bool justClicked = false;
 
 bool isLCtrlDown = false;
@@ -49,9 +50,15 @@ void updateInput(SDL_Window* window){
 				mouseDownY = mouseY;
 			}
 			mouseDown = true;
+			if (event.button.button == SDL_BUTTON_RIGHT) {
+				rightMouseDown = true;
+			}
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP) {
 			mouseDown = false;
+			if (event.button.button == SDL_BUTTON_RIGHT) {
+				rightMouseDown = false;
+			}
 		}
 
 		// MOUSE POSITION

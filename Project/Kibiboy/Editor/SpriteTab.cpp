@@ -29,15 +29,16 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	if (hovering(0, 32, 16 * 8, 16 * 8) && mouseDown) {
 		int x = mouseX / 8;
 		int y = (mouseY - 32) / 8;
-		openedSprite->setPixel(!editor->isSpriteEraserOn, x , y);
+		bool drawMode = !editor->isSpriteEraserOn != rightMouseDown;
+		openedSprite->setPixel(drawMode, x , y);
 	}
 
-	// Draw / Erase mode
+	// Eraser toggle
 	else if (hovering(16 * 8, 32, 32, 32) && justClicked) {
 		editor->isSpriteEraserOn = !editor->isSpriteEraserOn;
 	}
 
-	// Rect tool
+	// Rectangle toggle
 	else if (hovering(16 * 8, 64, 32, 32) && justClicked) {
 		std::cout << "Click!\n";
 		if (editor->spriteTool == TOOL_PENCIL) {

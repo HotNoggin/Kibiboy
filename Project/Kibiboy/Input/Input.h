@@ -17,6 +17,7 @@ extern int mouseY;
 extern int mouseDownX;
 extern int mouseDownY;
 extern bool mouseDown;
+extern bool rightMouseDown;
 extern bool justClicked;
 
 extern bool isLCtrlDown;
