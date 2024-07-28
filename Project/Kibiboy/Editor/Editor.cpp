@@ -2,6 +2,7 @@
 #include "Editor.h"
 #include "../Input/Input.h"
 #include "SpriteTab.h"
+#include "CodeTab.h"
 #include <iostream>
 
 
@@ -67,6 +68,10 @@ void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart) {
 	case EDITOR_TAB_SPRITE:
 		updateSpriteTab(editor, cart);
 		drawSpriteTab(editor, cart, canvas);
+		break;
+	case EDITOR_TAB_CODE:
+		updateCodeTab(editor, cart);
+		drawCodeTab(editor, cart, canvas);
 		break;
 	default:
 		break;

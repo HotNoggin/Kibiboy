@@ -11,19 +11,13 @@
 class Cart{
 public:
 	std::string name = "MY_CART.KIBI";
-	std::string script = R"(
-function _boot()
-
-end
-
-function _update()
-
-end
-
-function _draw()
-
-end
-)";
+	std::string script =
+		"function _boot()\n\n"
+		"end\n\n"
+		"function _update()\n\n"
+		"end\n\n"
+		"function _draw()\n\n"
+		"end\n\n";
 
 	// Image data loaded from a .kibi cart
 	std::array<Sprite, 256> sprites = {

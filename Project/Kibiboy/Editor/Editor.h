@@ -12,6 +12,7 @@ enum TOOLS {
 };
 
 
+// Holds the state of the editor (things that are not saved)
 struct EditorState {
 	Uint8 tab = 0;
 	Uint8 cursor = 0;
@@ -19,8 +20,8 @@ struct EditorState {
 	
 	// Sprite tab and drawing state
 
-	Uint8 canvasColor = 0;
-	Uint8 spriteColor = 1;
+	Uint8 canvasPreviewColor = 0;
+	Uint8 spritePreviewColor = 1;
 	Uint8 selectedSprite = 1;
 	Uint8 spriteSection = 0;
 	bool isSpriteEraserOn = false;

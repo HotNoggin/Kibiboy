@@ -62,8 +62,24 @@ void Canvas::glyph(char character, Color color, int x, int y) {
 // Writes a string of characters to the screen at the specified position
 // This does not work properly with all of unicode and should be improved.
 void Canvas::text(std::string text, Color color, int x, int y) {
+	int textX = 0;
+	int textY = 0;
+	
 	for (int i = 0; i < text.size(); i++) {
-		glyph(text[i], color, x + (i * 8), y);
+		switch (text[i])
+		{
+		case '\n':
+			textY += 16;
+			textX = 0;
+			break;
+		case '\t':
+			textX += 16;
+			break;
+		default:
+			glyph(text[i], color, x + textX, y + textY);
+			textX += 8;
+			break;
+		}
 	}
 }
 

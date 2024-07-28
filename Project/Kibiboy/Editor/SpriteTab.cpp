@@ -38,9 +38,9 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		editor->isSpriteEraserOn = !editor->isSpriteEraserOn;
 	}
 
+	// TODO: Rectangle tool
 	// Rectangle toggle
 	else if (hovering(16 * 8, 64, 32, 32) && justClicked) {
-		std::cout << "Click!\n";
 		if (editor->spriteTool == TOOL_PENCIL) {
 			std::cout << "RECT\n";
 			editor->spriteTool = TOOL_RECT;
@@ -51,7 +51,7 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 		}
 	}
 
-	// Canvas grid
+	// Canvas grid toggle
 	else if (hovering(16 * 8, 96, 32, 32) && justClicked) {
 		editor->isSpriteGridOn = !editor->isSpriteGridOn;
 	}
@@ -86,11 +86,11 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 
 		// Set canvas color if selecting from top 16 colors
 		if (index < 16) {
-			editor->canvasColor = index % 16;
+			editor->canvasPreviewColor = index % 16;
 		}
 		// Set sprite color if selecting from bottom 16 colors
 		else {
-			editor->spriteColor = index % 16;
+			editor->spritePreviewColor = index % 16;
 		}
 	}
 
@@ -169,7 +169,7 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 
 void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	// Sprite canvas background
-	canvas->rect(editor->canvasColor, 0, 32, 16 * 8, 16 * 8);
+	canvas->rect(editor->canvasPreviewColor, 0, 32, 16 * 8, 16 * 8);
 
 	// Sprite selection menu
 	for (int x = 0; x < 4; x++) {
@@ -235,12 +235,12 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 				x * 16 + 16 * 12 + 2, y * 16 + 162, 12, 12);
 			
 			// Selected colors
-			if (index % 16 == editor->canvasColor && index < 16) {
+			if (index % 16 == editor->canvasPreviewColor && index < 16) {
 				canvas->stamp(selector,
 					index % 16 == 0 ? WHITE : BLACK,
 					x * 16 + 16 * 12, y * 16 + 160);
 			}
-			if (index % 16 == editor->spriteColor && index > 15) {
+			if (index % 16 == editor->spritePreviewColor && index > 15) {
 				canvas->stamp(selector,
 					index % 16 == 0 ? WHITE : BLACK,
 					x * 16 + 16 * 12, y * 16 + 160);
@@ -258,10 +258,10 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	// Sprite canvas grid
 	if (editor->isSpriteGridOn) {
 		for (int x = 0; x < 5; x++) {
-			canvas->rect(editor->spriteColor, x * 32, 32, 1, 16 * 8);
+			canvas->rect(editor->spritePreviewColor, x * 32, 32, 1, 16 * 8);
 		}
 		for (int y = 0; y < 5; y++) {
-			canvas->rect(editor->spriteColor, 0, y * 32 + 32, 16 * 8, 1);
+			canvas->rect(editor->spritePreviewColor, 0, y * 32 + 32, 16 * 8, 1);
 		}
 	}
 
@@ -269,7 +269,7 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	for (int x = 0; x < 16; x++) {
 		for (int y = 0; y < 16; y++) {
 			if (selected->getPixel(x, y)) {
-				canvas->rect(editor->spriteColor, x * 8, y * 8 + 32, 8, 8);
+				canvas->rect(editor->spritePreviewColor, x * 8, y * 8 + 32, 8, 8);
 			}
 		}
 	}

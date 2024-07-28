@@ -7,6 +7,9 @@
 #include <string>
 
 
+// Manages everything that is shown in the window.
+// Has multiple drawing methods to edit the fixed-size canvas.
+// Drawn to the screen using integer scaling.
 class Canvas {
 public:
 	// Screen dimension constants
