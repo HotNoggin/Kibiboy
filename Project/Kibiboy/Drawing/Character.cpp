@@ -22,6 +22,31 @@ bool Character::getPixel(Uint8 x, Uint8 y) {
 }
 
 
+// Returns the index of the character in the allowed characters array.
+// This index is the character's KIBIBOY codepoint.
+// Returns codepoint 0 ('!') if the character doesn't appear.
+Uint8 codepoint(char c) {
+	for (int i = 0; i < characters.size(); i++) {
+		if (characters[i] = c) {
+			return i;
+		}
+	}
+	return 0;
+}
+
+
+// All accepted KIBIBOY characters, ordered by KIBIBOY codepoint
+std::array<char, 256> characters = {
+	'!', '?', '"', '#', '$', '%', '&', '\'',
+	'(', ')', '*', '+', ',', '-', '.', '/',
+	'1', '2', '3', '4', '5', '6', '7', '8',
+	'9', '0', ':', ';', '<', '=', '>', '@',
+	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
+	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 
+	'Y', 'Z', 
+};
+
 std::map<char, Character> font = {
 	// Symbols 0, punctuation
 	{'!', Character({0x0, 0x0, 0x0, 0x18, 0x18, 0x18, 0x18, 0x18,

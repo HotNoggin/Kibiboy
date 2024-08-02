@@ -15,3 +15,6 @@ public:
 };
 
 extern std::map<char, Character> font;
+extern std::array<char, 256> characters;
+
+Uint8 codepoint(char c);

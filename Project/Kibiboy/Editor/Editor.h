@@ -4,6 +4,7 @@
 #include "../Drawing/Canvas.h"
 #include "../Cart/Cart.h"
 #include <string>
+#include <vector>
 
 
 enum TOOLS {
@@ -27,6 +28,9 @@ struct EditorState {
 	bool isSpriteEraserOn = false;
 	bool isSpriteGridOn = false;
 	Uint8 spriteTool = TOOL_PENCIL;
+
+	// Code tab and text cursor state
+	std::vector<Uint8> codepoints = {};
 };
 
 
