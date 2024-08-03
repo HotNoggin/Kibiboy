@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <array>
 #include <map>
+#include <vector>
+#include <string>
 
 
 class Character {
@@ -18,3 +20,4 @@ extern std::map<char, Character> font;
 extern std::array<char, 256> characters;
 
 Uint8 codepoint(char c);
+std::vector<Uint8> stringToCodepoints(std::string text);

@@ -14,7 +14,6 @@
 
 
 int main(int argc, char* args[]) {
-
 	// Handles application operations like open, close, and window
 	Application* app = new Application();
 	bool appSuccess = app->initialize("Kibiboy",

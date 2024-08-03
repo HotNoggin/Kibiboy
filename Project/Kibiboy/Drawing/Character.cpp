@@ -27,11 +27,22 @@ bool Character::getPixel(Uint8 x, Uint8 y) {
 // Returns codepoint 0 ('!') if the character doesn't appear.
 Uint8 codepoint(char c) {
 	for (int i = 0; i < characters.size(); i++) {
-		if (characters[i] = c) {
+		if (characters[i] == c) {
 			return i;
 		}
 	}
 	return 0;
+}
+
+
+// Converts a UTF-8 string 
+// BROKEN: DOES NOT ACTUALLY WORK WITH UTF-8!!! FIX ME!!!
+std::vector<Uint8> stringToCodepoints(std::string text) {
+	std::vector<Uint8> codepoints = {};
+	for (int i = 0; i < text.size(); i++) {
+		codepoints.push_back(codepoint(text[i]));
+	}
+	return codepoints;
 }
 
 

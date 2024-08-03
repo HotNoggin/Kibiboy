@@ -31,6 +31,8 @@ struct EditorState {
 
 	// Code tab and text cursor state
 	std::vector<Uint8> codepoints = {};
+	int caret_row = 0;
+	int caret_column = 0;
 };
 
 
