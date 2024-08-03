@@ -2,6 +2,7 @@
 #include "SpriteTab.h"
 #include "../Input/Input.h"
 #include <iostream>
+#include <algorithm>
 
 
 Sprite eraserIcon = Sprite({
@@ -26,11 +27,12 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	}
 
 	// Sprite pixel editing
+	int pixX = std::max(0, std::min(mouseX / 8, 15));
+	int pixY = std::max(0, std::min((mouseY - 32) / 8, 15));
+
 	if (hovering(0, 32, 16 * 8, 16 * 8) && mouseDown) {
-		int x = mouseX / 8;
-		int y = (mouseY - 32) / 8;
 		bool drawMode = !editor->isSpriteEraserOn != rightMouseDown;
-		openedSprite->setPixel(drawMode, x , y);
+		openedSprite->setPixel(drawMode, pixX , pixY);
 	}
 
 	// Eraser toggle
@@ -164,6 +166,10 @@ void updateSpriteTab(EditorState* editor, Cart* cart){
 	else {
 		editor->cursor = CURSOR_POINT;
 	}
+
+	// Sprite information
+	editor->footerText = "X:" + std::to_string(pixX) +
+		"  Y:" + std::to_string(pixY);
 }
 
 
@@ -258,10 +264,12 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	// Sprite canvas grid
 	if (editor->isSpriteGridOn) {
 		for (int x = 0; x < 5; x++) {
-			canvas->rect(editor->spritePreviewColor, x * 32, 32, 1, 16 * 8);
+			canvas->rect(
+				editor->spritePreviewColor, x * 32, 32, 1, 16 * 8);
 		}
 		for (int y = 0; y < 5; y++) {
-			canvas->rect(editor->spritePreviewColor, 0, y * 32 + 32, 16 * 8, 1);
+			canvas->rect(
+				editor->spritePreviewColor, 0, y * 32 + 32, 16 * 8, 1);
 		}
 	}
 
@@ -269,8 +277,20 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	for (int x = 0; x < 16; x++) {
 		for (int y = 0; y < 16; y++) {
 			if (selected->getPixel(x, y)) {
-				canvas->rect(editor->spritePreviewColor, x * 8, y * 8 + 32, 8, 8);
+				canvas->rect(
+					editor->spritePreviewColor, x * 8, y * 8 + 32, 8, 8);
 			}
 		}
 	}
+
+	// Sprite index
+	if (editor->selectedSprite == 0) {
+		canvas->text(numberAsText(editor->selectedSprite, 3),
+			WHITE, 0, 16 * 8 + 32);
+	}
+	else {
+		canvas->text(numberAsText(editor->selectedSprite, 3),
+			WHITE, 0, 16 * 8 + 32);
+	}
+	
 }

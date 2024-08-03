@@ -19,6 +19,7 @@ extern int mouseDownY;
 extern bool mouseDown;
 extern bool rightMouseDown;
 extern bool justClicked;
+extern int scrollWheel;
 
 extern bool isLCtrlDown;
 extern bool isRCtrlDown;

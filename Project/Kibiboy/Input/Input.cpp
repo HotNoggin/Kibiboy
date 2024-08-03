@@ -19,6 +19,7 @@ int mouseDownY = 0;
 bool mouseDown = false;
 bool rightMouseDown = false;
 bool justClicked = false;
+int scrollWheel = 0;
 
 bool isLCtrlDown = false;
 bool isRCtrlDown = false;
@@ -31,6 +32,7 @@ std::vector<int> keyEvents = {};
 void updateInput(SDL_Window* window){
 	SDL_Event event;
 	justClicked = false;
+	scrollWheel = 0;
 	textEvents.clear();
 	keyEvents.clear();
 
@@ -58,6 +60,16 @@ void updateInput(SDL_Window* window){
 			mouseDown = false;
 			if (event.button.button == SDL_BUTTON_RIGHT) {
 				rightMouseDown = false;
+			}
+		}
+
+		// SCROLL WHEEL
+		else if (event.type == SDL_MOUSEWHEEL) {
+			if (event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED) {
+				scrollWheel = -event.wheel.y;
+			}
+			else {
+				scrollWheel = event.wheel.y;
 			}
 		}
 

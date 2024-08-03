@@ -62,7 +62,6 @@ void drawFooter(EditorState* editor, Canvas* canvas, Cart* cart);
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart) {
 	canvas->clear();
 	updateBaseUI(editor);
-	drawBaseUI(editor, canvas);
 	switch (editor->tab)
 	{
 	case EDITOR_TAB_SPRITE:
@@ -76,6 +75,7 @@ void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart) {
 	default:
 		break;
 	}
+	drawBaseUI(editor, canvas);
 	drawFooter(editor, canvas, cart);
 	drawCursor(editor, canvas);
 }
@@ -146,7 +146,9 @@ void drawBaseUI(EditorState* editor, Canvas* canvas) {
 
 
 void drawFooter(EditorState* editor, Canvas* canvas, Cart* cart) {
-	canvas->text("KIBIBOY V0.0.1: " + cart->name, WHITE, 0, 16 * 15);
+	canvas->text(editor->footerText, BLACK, 4, 16 * 14);
+	canvas->text("KIBIBOY V0.0.1: " + cart->name, WHITE, 4, 16 * 15);
+	editor->footerText = "";
 }
 
 
