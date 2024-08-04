@@ -73,7 +73,7 @@ void Canvas::text(std::string text, Color color, int x, int y) {
 			textX = 0;
 			break;
 		case '\t':
-			textX += 16;
+			textX += 8;
 			break;
 		default:
 			glyph(text[i], color, x + textX, y + textY);

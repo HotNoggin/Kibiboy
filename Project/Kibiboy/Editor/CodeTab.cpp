@@ -42,6 +42,11 @@ void updateCodeTab(EditorState* editor, Cart* cart) {
 		fixCaretByIdx(codeIdx + 1, editor);
 		caretBlinkTime = 0;
 	}
+	else if (keyPress(SDLK_TAB)) {
+		editor->code.insert(itr, codepoint('\t'));
+		fixCaretByIdx(codeIdx + 1, editor);
+		caretBlinkTime = 0;
+	}
 
 	// Typing (text)
 	else {
