@@ -234,6 +234,10 @@ void drawSpriteTab(EditorState* editor, Cart* cart, Canvas* canvas){
 	canvas->stamp(trashIcon, RED, 16 * 8 + 8, 136);
 
 	// Color selection menu
+	canvas->text("CANVAS\nPREVIEW", editor->spritePreviewColor,
+		16 * 8, 160);
+	canvas->text("SPRITE\nPREVIEW", editor->spritePreviewColor,
+		16 * 8, 192);
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 4; y++) {
 			int index = (y * 8) + (x % 8);
