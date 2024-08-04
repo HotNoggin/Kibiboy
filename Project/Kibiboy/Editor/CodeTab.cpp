@@ -10,6 +10,7 @@ int codeColumn = 0;
 
 
 void fixCaret(int row, int column, EditorState* editor);
+void fixCaretByIdx(int index, EditorState* editor);
 
 
 void updateCodeTab(EditorState* editor, Cart* cart) {
@@ -29,16 +30,21 @@ void updateCodeTab(EditorState* editor, Cart* cart) {
 
 	// Typing (control)
 	if (keyPress(SDLK_BACKSPACE)) {
-		std::advance(itr, -1);
-		editor->code.erase(itr);
-		--codeColumn;
-		fixCaret(codeRow, codeColumn, editor);
-		caretBlinkTime = 0;
-		std::cout << "BACK\n";
+		if (codeIdx > 0) {
+			std::advance(itr, -1);
+			fixCaretByIdx(codeIdx - 1, editor);
+			editor->code.erase(itr);
+			caretBlinkTime = 0;
+		}
 	}
-	
+	else if (keyPress(SDLK_RETURN)) {
+		editor->code.insert(itr, codepoint('\n'));
+		fixCaretByIdx(codeIdx + 1, editor);
+		caretBlinkTime = 0;
+	}
+
+	// Typing (text)
 	else {
-		// Typing (text)
 		std::vector<Uint8> codepoints = {};
 		for (int i = 0; i < textEvents.size(); i++) {
 			std::string text = textEvents[i];
@@ -46,10 +52,12 @@ void updateCodeTab(EditorState* editor, Cart* cart) {
 				codepoints.push_back(codepoint(text[ii]));
 			}
 		}
-		editor->code.insert(itr, codepoints.begin(), codepoints.end());
-		codeColumn += (int)codepoints.size();
-		fixCaret(codeRow, codeColumn, editor);
-		caretBlinkTime = 0;
+		if (codepoints.size() > 0) {
+			editor->code.insert(itr, codepoints.begin(), codepoints.end());
+			codeColumn += (int)codepoints.size();
+			fixCaretByIdx(codeIdx + (int)codepoints.size(), editor);
+			caretBlinkTime = 0;
+		}
 	}
 
 	// Caret coordinates
@@ -72,27 +80,50 @@ void drawCodeTab(EditorState* editor, Cart* cart, Canvas* canvas) {
 }
 
 
+// Does the same as fixCaret(), but by index instead of coordinate
+void fixCaretByIdx(int index, EditorState* editor) {
+	int r = 0;
+	int c = 0;
+
+	for (codeIdx = 0; codeIdx < index; codeIdx++) {
+		if (editor->code[codeIdx] == codepoint('\n')) {
+			r++;
+			c = 0;
+		}
+		else {
+			c++;
+		}
+	}
+	editor->caretRow = r;
+	editor->caretColumn = c;
+}
+
+
 // Set the codeIdx and editor caret row and column to a valid char
+// If column is negative, the caret is put at the end of the previous line
 void fixCaret(int row, int column, EditorState* editor) {
 	int r = 0; // Actual clickable row
 	int c = 0; // Actual clickable column
 
 	// Find the index of the first character in the row
 	for (codeIdx = 0; codeIdx < editor->code.size(); codeIdx++) {
-		if (r == row) {
+		if (r == row - 1 && column < 0) {
+			break;
+		}
+		else if (r == row) {
 			break;
 		}
 		if (characters[editor->code[codeIdx]] == '\n') {
-			r += 1;
+			r++;
 		}
 	}
 
 	// Find the index of the character at the column or end
 	for (codeIdx = codeIdx; codeIdx < editor->code.size(); codeIdx++) {
-		if (c == column) {
+		if (c == column && column >= 0) {
 			break;
 		}
-		if (characters[editor->code[codeIdx]] == '\n') {
+		if (editor->code[codeIdx] == codepoint('\n')) {
 			break;
 		}
 		c++;
