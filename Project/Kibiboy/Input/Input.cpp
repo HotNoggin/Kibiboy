@@ -8,7 +8,7 @@
 // Used to tell if something was just pressed
 std::vector<int> oldEvents = {};
 // The input events from the most recent update() call
-std::vector<int> events = {};
+std::vector<int> keyEvents = {};
 
 bool quitQueued = false;
 
@@ -25,7 +25,7 @@ bool isLCtrlDown = false;
 bool isRCtrlDown = false;
 
 std::vector<std::string> textEvents = {};
-std::vector<int> keyEvents = {};
+
 
 
 // Set all input variables according to the SDL input events
@@ -33,6 +33,7 @@ void updateInput(SDL_Window* window){
 	SDL_Event event;
 	justClicked = false;
 	scrollWheel = 0;
+	oldEvents = keyEvents;
 	textEvents.clear();
 	keyEvents.clear();
 
@@ -101,8 +102,7 @@ void updateInput(SDL_Window* window){
 				isRCtrlDown = true;
 			}
 
-			else if (event.key.keysym.sym >= SDLK_a &&
-				event.key.keysym.sym <= SDLK_z) {
+			else {
 				keyEvents.push_back(event.key.keysym.sym);
 			}
 		}
@@ -124,11 +124,12 @@ bool hovering(int x, int y, int w, int h) {
 }
 
 
-// Returns true if the specified key was just pressed this frame
+// Returns true if the specified key was pressed this frame
 bool keyPress(int keysym) {
 	for (int i = 0; i < keyEvents.size(); i++) {
 		if (keyEvents[i] == keysym) {
 			return true;
+			std::cout << "Yes it is pressed\n";
 		}
 	}
 	return false;

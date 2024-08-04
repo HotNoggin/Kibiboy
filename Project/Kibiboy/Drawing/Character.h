@@ -21,3 +21,4 @@ extern std::array<char, 256> characters;
 
 Uint8 codepoint(char c);
 std::vector<Uint8> stringToCodepoints(std::string text);
+std::string codepointsToString(std::vector<Uint8> codepoints);

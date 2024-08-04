@@ -30,7 +30,8 @@ struct EditorState {
 	Uint8 spriteTool = TOOL_PENCIL;
 
 	// Code tab and text cursor state
-	std::vector<Uint8> codepoints = {};
+
+	std::vector<Uint8> code = {};
 	int caretRow = 0;
 	int caretColumn = 0;
 	int topRow = 0;

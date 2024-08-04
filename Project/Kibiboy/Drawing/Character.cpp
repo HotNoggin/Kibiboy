@@ -46,6 +46,17 @@ std::vector<Uint8> stringToCodepoints(std::string text) {
 }
 
 
+// Converts codepoints to a UTF-8 string
+// BROKEN: RESULT MAY NOT BE UTF-8 if source code isn't UTF-8!!! FIX ME!!!
+std::string codepointsToString(std::vector<Uint8> codepoints) {
+	std::string text = "";
+	for (int i = 0; i < codepoints.size(); i++) {
+		text += characters[codepoints[i]];
+	}
+	return text;
+}
+
+
 // All accepted KIBIBOY characters, ordered by KIBIBOY codepoint
 std::array<char, 256> characters = {
 	'!', '?', '"', '#', '$', '%', '&', '\'',
