@@ -152,10 +152,32 @@ void drawFooter(EditorState* editor, Canvas* canvas, Cart* cart) {
 }
 
 
+// Returns a number as a string with leading zeroes
 std::string numberAsText(int number, int minLength) {
 	std::string textNumber = std::to_string(number);
 	while (textNumber.size() < minLength) {
 		textNumber = "0" + textNumber;
 	}
 	return textNumber;
+}
+
+
+// Returns text as an array of text with one element per line
+std::vector<std::string> textLines(std::string text) {
+	std::vector<std::string> lines;
+	std::string line = "";
+
+	for (int i = 0; i < text.size(); i++) {
+		if (text[i] == '\n') {
+			lines.push_back(line);
+			line = "";
+		}
+		else {
+			line += text[i];
+		}
+	}
+
+	lines.push_back(line);
+
+	return lines;
 }

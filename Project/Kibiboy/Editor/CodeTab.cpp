@@ -20,7 +20,7 @@ void updateCodeTab(EditorState* editor, Cart* cart) {
 	// Caret positioning
 	if (hovering(4, 32, 308, 16 * 12) && mouseDown) {
 		codeColumn = (mouseX - 4) / 8;
-		codeRow = ((mouseY - 32) / 16) + editor->topRow;
+		codeRow = ((mouseY - 32) / 16) + editor->topCodeRow;
 		fixCaret(codeRow, codeColumn, editor);
 		caretBlinkTime = 0;
 	}
@@ -78,10 +78,25 @@ void drawCodeTab(EditorState* editor, Cart* cart, Canvas* canvas) {
 	// Caret
 	caretBlinkTime = (caretBlinkTime + 1) % 30;
 	canvas->rect((caretBlinkTime < 15)? BLUE : BLACK,
-		editor->caretColumn * 8 + 4, editor->caretRow * 16 + 32, 8, 16);
+		editor->caretColumn * 8 + 4,
+		(editor->caretRow - editor->topCodeRow) * 16 + 32,
+		8, 16);
 
 	// Code
-	canvas->text(cart->script, WHITE, 4, 32);
+	std::vector<std::string> lines = textLines(cart->script);
+	while (editor->caretRow < editor->topCodeRow) {
+		editor->topCodeRow--;
+	}
+	while (editor->caretRow > editor->topCodeRow + 11) {
+		editor->topCodeRow++;
+	}
+
+	for (int i = 0; i < 12; i++) {
+		if (editor->topCodeRow + i >= lines.size()) {
+			break;
+		}
+		canvas->text(lines[i + editor->topCodeRow], WHITE, 4, 32 + i * 16);
+	}
 }
 
 

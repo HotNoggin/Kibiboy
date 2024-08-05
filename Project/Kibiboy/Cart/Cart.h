@@ -17,7 +17,7 @@ public:
 		"function _update()\n"
 		"end\n\n"
 		"function _draw()\n"
-		"end\n\n";
+		"end";
 
 	// Image data loaded from a .kibi cart
 	std::array<Sprite, 256> sprites = {

@@ -34,7 +34,7 @@ struct EditorState {
 	std::vector<Uint8> code = {};
 	int caretRow = 0;
 	int caretColumn = 0;
-	int topRow = 0;
+	int topCodeRow = 0;
 };
 
 
@@ -56,5 +56,6 @@ enum CURSOR_MODES {
 
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart);
 std::string numberAsText(int number, int minLength);
+std::vector<std::string> textLines(std::string text);
 
 extern Sprite selector;
