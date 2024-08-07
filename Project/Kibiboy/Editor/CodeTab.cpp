@@ -11,11 +11,13 @@ int codeColumn = 0;
 
 void fixCaret(int row, int column, EditorState* editor);
 void fixCaretByIdx(int index, EditorState* editor);
+void scrollToCaret(EditorState* editor);
 
 
 void updateCodeTab(EditorState* editor, Cart* cart) {
 	// Unpack script
 	editor->code = stringToCodepoints(cart->script);
+	int lineCount = 0;
 
 	// Caret positioning
 	if (hovering(4, 32, 308, 16 * 12) && mouseDown) {
@@ -32,19 +34,22 @@ void updateCodeTab(EditorState* editor, Cart* cart) {
 	if (keyPress(SDLK_BACKSPACE)) {
 		if (codeIdx > 0) {
 			std::advance(itr, -1);
-			fixCaretByIdx(codeIdx - 1, editor);
 			editor->code.erase(itr);
+			fixCaretByIdx(codeIdx - 1, editor);
+			scrollToCaret(editor);
 			caretBlinkTime = 0;
 		}
 	}
 	else if (keyPress(SDLK_RETURN)) {
 		editor->code.insert(itr, codepoint('\n'));
 		fixCaretByIdx(codeIdx + 1, editor);
+		scrollToCaret(editor);
 		caretBlinkTime = 0;
 	}
 	else if (keyPress(SDLK_TAB)) {
 		editor->code.insert(itr, codepoint('\t'));
 		fixCaretByIdx(codeIdx + 1, editor);
+		scrollToCaret(editor);
 		caretBlinkTime = 0;
 	}
 
@@ -61,9 +66,23 @@ void updateCodeTab(EditorState* editor, Cart* cart) {
 			editor->code.insert(itr, codepoints.begin(), codepoints.end());
 			codeColumn += (int)codepoints.size();
 			fixCaretByIdx(codeIdx + (int)codepoints.size(), editor);
+			scrollToCaret(editor);
 			caretBlinkTime = 0;
 		}
 	}
+
+	// Manual scrolling
+	if (scrollWheel != 0) {
+		lineCount = (int)textLines(cart->script).size();
+		editor->topCodeRow -= scrollWheel;
+		if (editor->topCodeRow < 0) {
+			editor->topCodeRow = 0;
+		}
+		if (editor->topCodeRow >= lineCount) {
+			editor->topCodeRow = lineCount - 1;
+		}
+	}
+	
 
 	// Caret coordinates
 	editor->footerText = "Row:" + std::to_string(editor->caretRow) +
@@ -84,13 +103,6 @@ void drawCodeTab(EditorState* editor, Cart* cart, Canvas* canvas) {
 
 	// Code
 	std::vector<std::string> lines = textLines(cart->script);
-	while (editor->caretRow < editor->topCodeRow) {
-		editor->topCodeRow--;
-	}
-	while (editor->caretRow > editor->topCodeRow + 11) {
-		editor->topCodeRow++;
-	}
-
 	for (int i = 0; i < 12; i++) {
 		if (editor->topCodeRow + i >= lines.size()) {
 			break;
@@ -151,4 +163,14 @@ void fixCaret(int row, int column, EditorState* editor) {
 
 	editor->caretRow = r;
 	editor->caretColumn = c;
+}
+
+
+void scrollToCaret(EditorState* editor) {
+	while (editor->caretRow < editor->topCodeRow) {
+		editor->topCodeRow--;
+	}
+	while (editor->caretRow > editor->topCodeRow + 11) {
+		editor->topCodeRow++;
+	}
 }
