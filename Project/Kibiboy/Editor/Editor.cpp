@@ -82,6 +82,7 @@ void drawFooter(EditorState* editor, Canvas* canvas, Cart* cart);
 
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart) {
 	canvas->clear();
+	editor->cursor = CURSOR_POINT;
 
 	bool canToggleConsole = editor->tab != EDITOR_TAB_CONSOLE;
 
