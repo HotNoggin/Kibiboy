@@ -40,14 +40,24 @@ struct EditorState {
 
 	// Console tab and text cursor state
 
-	std::vector<std::string> logs = {"Hi,", "this", "is a", "test!",
-	"Press [ESC] to enter edit mode!"};
-	std::vector<Uint8> logColors = { 2, 5, 7, 9, 1 };
+	std::vector<std::string> logs = {
+		"Welcome to",
+		R"(._..__ ._. .__.  ._. .__.  .___  __  __)",
+		R"(| |/ / | | | . \ | | | . \ |   \ \ \/ /)",
+		R"(|   /  | | |   / | | |   / |^u^|  \  / )",
+		R"(|   \  | | | . \ | | | . \ |   |  | |  )",
+		R"(|_|\_\ |_| |___/ |_| |___/ |___|  |_|  )",
+		R"(=======================================)",
+		"Your teeny tool to make arcade-y games!",
+		"",
+		"Press [ESC] to enter edit mode, or",
+		"Enter HELP to see how to get started!"
+		};
+	std::vector<Uint8> logColors = { 2, 3, 5, 7, 9, 11, 10, 1, 0, 1, 1};
 	std::vector<Uint8> consoleInput = {};
 	int consoleCursorRow = 0;
 	int consoleCursorColumn = 0;
-	int topConsoleRow = 0;
-	int leftConsoleColumn = 0;
+	int consoleInputIndex = 0;
 };
 
 

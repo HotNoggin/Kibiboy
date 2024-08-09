@@ -11,13 +11,13 @@ void updateConsole(EditorState* editor, Cart* cart){
 	}
 
 	std::vector<Uint8>::iterator itr = editor->consoleInput.begin();
-	std::advance(itr, editor->consoleCursorColumn);
+	std::advance(itr, editor->consoleInputIndex);
 
 	// Typing (control)
 	if (keyPress(SDLK_BACKSPACE)) {
-		if (editor->consoleCursorColumn > 0) {
+		if (editor->consoleInputIndex > 0) {
 			std::advance(itr, -1);
-			editor->consoleCursorColumn--;
+			editor->consoleInputIndex--;
 			editor->consoleInput.erase(itr);
 		}
 	}
@@ -37,7 +37,7 @@ void updateConsole(EditorState* editor, Cart* cart){
 		if (codepoints.size() > 0) {
 			editor->consoleInput.insert(itr,
 				codepoints.begin(), codepoints.end());
-			editor->consoleCursorColumn += (int)codepoints.size();
+			editor->consoleInputIndex += (int)codepoints.size();
 		}
 	}
 
@@ -46,7 +46,7 @@ void updateConsole(EditorState* editor, Cart* cart){
 		consoleLog("> " + codepointsToString(editor->consoleInput),
 			10, editor);
 		editor->consoleInput = {};
-		editor->consoleCursorColumn = 0;
+		editor->consoleInputIndex = 0;
 	}
 }
 
@@ -62,13 +62,17 @@ void drawConsole(EditorState* editor, Cart* cart, Canvas* canvas) {
 			4, index * 16);
 	}
 
+	// Text cursor
+	canvas->rect(BLUE,
+		editor->consoleInputIndex * 8 + 20, index * 16, 8, 16);
+
 	// Current input
-	canvas->text("> " + codepointsToString(editor->consoleInput), WHITE,
+	canvas->text("> " + codepointsToString(editor->consoleInput), TEAL,
 		4, index * 16);
 	
 	// Left and right margins
-	canvas->rect(BLUE, 0, 0, 3, 256);
-	canvas->rect(BLUE, 317, 0, 3, 256);
+	canvas->rect(BLUE, 0, 0, 2, 256);
+	canvas->rect(BLUE, 318, 0, 2, 256);
 }
 
 
@@ -78,5 +82,6 @@ void consoleLog(std::string text, Uint8 color, EditorState* editor) {
 
 	while (editor->logs.size() >= 16) {
 		editor->logs.erase(editor->logs.begin());
+		editor->logColors.erase(editor->logColors.begin());
 	}
 }
