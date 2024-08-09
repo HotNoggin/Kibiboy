@@ -22,6 +22,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Drawing\Character.cpp" />
     <ClCompile Include="Editor\CodeTab.cpp" />
+    <ClCompile Include="Editor\Console.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
     <ClCompile Include="Editor\SpriteTab.cpp" />
     <ClCompile Include="KibiLibrary\KibiLib.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Cart\Cart.h" />
     <ClInclude Include="Drawing\Character.h" />
     <ClInclude Include="Editor\CodeTab.h" />
+    <ClInclude Include="Editor\Console.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Editor\Editor.h" />
     <ClInclude Include="Editor\SpriteTab.h" />

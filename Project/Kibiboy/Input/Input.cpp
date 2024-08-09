@@ -24,6 +24,9 @@ int scrollWheel = 0;
 bool isLCtrlDown = false;
 bool isRCtrlDown = false;
 
+bool isLShiftDown = false;
+bool isRShiftDown = false;
+
 std::vector<std::string> textEvents = {};
 
 
@@ -101,6 +104,12 @@ void updateInput(SDL_Window* window){
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RCTRL) {
 				isRCtrlDown = true;
 			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+				isLShiftDown = true;
+			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_RSHIFT) {
+				isRShiftDown = true;
+			}
 
 			else {
 				keyEvents.push_back(event.key.keysym.sym);
@@ -112,6 +121,12 @@ void updateInput(SDL_Window* window){
 			}
 			else if (event.key.keysym.scancode == SDL_SCANCODE_RCTRL) {
 				isRCtrlDown = false;
+			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+				isLShiftDown = false;
+			}
+			else if (event.key.keysym.scancode == SDL_SCANCODE_RSHIFT) {
+				isRShiftDown = false;
 			}
 		}
 	}

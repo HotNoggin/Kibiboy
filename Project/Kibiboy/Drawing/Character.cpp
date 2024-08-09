@@ -36,7 +36,7 @@ Uint8 codepoint(char c) {
 
 
 // Converts a UTF-8 string 
-// BROKEN: DOES NOT ACTUALLY WORK WITH UTF-8!!! FIX ME!!!
+// FIMXE: DOES NOT ACTUALLY WORK WITH UTF-8!!!
 std::vector<Uint8> stringToCodepoints(std::string text) {
 	std::vector<Uint8> codepoints = {};
 	for (int i = 0; i < text.size(); i++) {
@@ -47,7 +47,7 @@ std::vector<Uint8> stringToCodepoints(std::string text) {
 
 
 // Converts codepoints to a UTF-8 string
-// BROKEN: RESULT MAY NOT BE UTF-8 if source code isn't UTF-8!!! FIX ME!!!
+// FIMXE: RESULT MAY NOT BE UTF-8 if source code isn't UTF-8!!!
 std::string codepointsToString(std::vector<Uint8> codepoints) {
 	std::string text = "";
 	for (int i = 0; i < codepoints.size(); i++) {

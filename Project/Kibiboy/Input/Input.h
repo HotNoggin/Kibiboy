@@ -24,6 +24,9 @@ extern int scrollWheel;
 extern bool isLCtrlDown;
 extern bool isRCtrlDown;
 
+extern bool isLShiftDown;
+extern bool isRShiftDown;
+
 extern std::vector<std::string> textEvents;
 
 extern std::vector<int> keyEvents;

@@ -15,7 +15,8 @@ enum TOOLS {
 
 // Holds the state of the editor (things that are not saved)
 struct EditorState {
-	Uint8 tab = 0;
+	Uint8 tab = 5;
+	Uint8 lastTab = 0;
 	Uint8 cursor = 0;
 	std::string footerText = "";
 	
@@ -32,9 +33,21 @@ struct EditorState {
 	// Code tab and text cursor state
 
 	std::vector<Uint8> code = {};
-	int caretRow = 0;
-	int caretColumn = 0;
+	int codeCursorRow = 0;
+	int codeCursorColumn = 0;
 	int topCodeRow = 0;
+	int leftCodeColumn = 0;
+
+	// Console tab and text cursor state
+
+	std::vector<std::string> logs = {"Hi,", "this", "is a", "test!",
+	"Press [ESC] to enter edit mode!"};
+	std::vector<Uint8> logColors = { 2, 5, 7, 9, 1 };
+	std::vector<Uint8> consoleInput = {};
+	int consoleCursorRow = 0;
+	int consoleCursorColumn = 0;
+	int topConsoleRow = 0;
+	int leftConsoleColumn = 0;
 };
 
 
@@ -44,14 +57,14 @@ enum EDITOR_TABS {
 	EDITOR_TAB_MAP,
 	EDITOR_TAB_AUDIO,
 	EDITOR_TAB_MUSIC,
-	EDITOR_TAB_GAME,
 	EDITOR_TAB_CONSOLE
 };
 
 
 enum CURSOR_MODES {
 	CURSOR_POINT,
-	CURSOR_BRUSH
+	CURSOR_BRUSH,
+	CURSOR_CROSS
 };
 
 void updateEditor(Canvas* canvas, EditorState* editor, Cart* cart);
